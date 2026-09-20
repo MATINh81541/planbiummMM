@@ -1,22 +1,6 @@
 /*
  * PlanBium unified auth page.
- *
- * Handles: login, signup, and OTP verification flows.
- * Routes: /login and /signup both render this component.
- *
- * Email OTP flow:
- *   email → request OTP → OTP input → verify → session → destination
- *
- * Google OAuth flow:
- *   click → provider redirect → callback → session → destination
- *
- * Only displays methods that are actually configured (Google button shown
- * only if OAuth is available — we attempt the call and handle errors gracefully).
- *
- * Post-auth destination rules:
- *   - Pending purchase → /dashboard/cart (restores selected product)
- *   - Valid ?next= param → that path
- *   - No pending → /dashboard
+ * Email + 6-digit OTP authentication.
  */
 
 import { useState, useEffect, useCallback, type FormEvent } from 'react';
@@ -55,11 +39,13 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
   const [info, setInfo] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
 
-  const nextPath = safeRedirectPath(new URLSearchParams(location.search).get('next'));
+  const nextPath = safeRedirectPath(
+    new URLSearchParams(location.search).get('next')
+  );
 
-  // Redirect authenticated users away
   useEffect(() => {
     if (loading || !user) return;
+
     if (pendingProductId) {
       navigate('/dashboard/cart', { replace: true });
     } else {
@@ -67,53 +53,102 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
     }
   }, [user, loading, pendingProductId, nextPath, navigate]);
 
-  // Resend cooldown timer
   useEffect(() => {
     if (cooldown <= 0) return;
-    const timer = setTimeout(() => setCooldown((c) => c - 1), 1000);
+
+    const timer = setTimeout(() => {
+      setCooldown((current) => current - 1);
+    }, 1000);
+
     return () => clearTimeout(timer);
   }, [cooldown]);
 
   const sendOtp = useCallback(async () => {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      setError(t('auth.loginFailed'));
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
     setInfo(null);
+
     try {
       const { error: otpError } = await supabase.auth.signInWithOtp({
-        email,
-        options: { shouldCreateUser: mode === 'signup' },
+        email: normalizedEmail,
+        options: {
+          shouldCreateUser: mode === 'signup',
+          emailRedirectTo: undefined,
+        },
       });
-      if (otpError) throw otpError;
+
+      if (otpError) {
+        throw otpError;
+      }
+
+      setEmail(normalizedEmail);
+      setOtp('');
       setStep('otp');
-      setInfo(t('auth.otpSent'));
       setCooldown(RESEND_COOLDOWN_SECONDS);
-    } catch {
-      setError(mode === 'login' ? t('auth.loginFailed') : t('auth.signupFailed'));
+      setInfo(t('auth.otpSent'));
+    } catch (err) {
+      console.error('OTP send error:', err);
+      setError(
+        mode === 'login'
+          ? t('auth.loginFailed')
+          : t('auth.signupFailed')
+      );
     } finally {
       setSubmitting(false);
     }
   }, [email, mode, t]);
 
   const verifyOtp = useCallback(async () => {
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedOtp = otp.replace(/\D/g, '');
+
+    if (normalizedOtp.length !== 6) {
+      setError(t('auth.otpInvalid'));
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
+    setInfo(null);
+
     try {
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        email,
-        token: otp,
-        type: 'email',
-      });
+      const { data, error: verifyError } =
+        await supabase.auth.verifyOtp({
+          email: normalizedEmail,
+          token: normalizedOtp,
+          type: 'email',
+        });
+
       if (verifyError) {
-        if (verifyError.message.includes('expired')) {
+        console.error('OTP verification error:', verifyError);
+
+        if (
+          verifyError.message.toLowerCase().includes('expired')
+        ) {
           setError(t('auth.otpExpired'));
         } else {
           setError(t('auth.otpInvalid'));
         }
+
         return;
       }
-      // Success — onAuthStateChange will fire and the redirect effect handles navigation
-      // Clear pending purchase only after cart restoration (handled in cart page)
-    } catch {
+
+      if (!data.session) {
+        setError(t('auth.otpInvalid'));
+        return;
+      }
+
+      // Successful authentication.
+      // useAuth() will receive the new session and redirect automatically.
+    } catch (err) {
+      console.error('OTP verification error:', err);
       setError(t('auth.otpInvalid'));
     } finally {
       setSubmitting(false);
@@ -123,47 +158,65 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
   const handleGoogleAuth = useCallback(async () => {
     setSubmitting(true);
     setError(null);
+
     try {
       const redirectTo = `${window.location.origin}/auth/callback`;
-      const { error: googleError } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo,
-          queryParams: { prompt: 'select_account' },
-        },
-      });
-      if (googleError) throw googleError;
-      // Browser redirects away — no need to setSubmitting(false)
-    } catch {
+
+      const { error: googleError } =
+        await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo,
+            queryParams: {
+              prompt: 'select_account',
+            },
+          },
+        });
+
+      if (googleError) {
+        throw googleError;
+      }
+    } catch (err) {
+      console.error('Google auth error:', err);
       setError(t('auth.loginFailed'));
       setSubmitting(false);
     }
   }, [t]);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
     if (step === 'email') {
-      sendOtp();
+      void sendOtp();
     } else {
-      verifyOtp();
+      void verifyOtp();
     }
   }
 
   const isLogin = mode === 'login';
-  const title = isLogin ? t('auth.login.title') : t('auth.signup.title');
-  const subtitle = isLogin ? t('auth.login.subtitle') : t('auth.signup.subtitle');
+
+  const title = isLogin
+    ? t('auth.login.title')
+    : t('auth.signup.title');
+
+  const subtitle = isLogin
+    ? t('auth.login.subtitle')
+    : t('auth.signup.subtitle');
 
   return (
     <AuthShell>
-      {/* Title */}
       <div className="mb-8 text-center">
-        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">{title}</h1>
-        <p className="mt-2 text-sm text-gray-600">{subtitle}</p>
+        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+          {title}
+        </h1>
+
+        <p className="mt-2 text-sm text-gray-600">
+          {subtitle}
+        </p>
       </div>
 
       {step === 'email' && (
         <>
-          {/* Google OAuth */}
           <Button
             variant="secondary"
             size="lg"
@@ -172,71 +225,115 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
             disabled={submitting}
           >
             {submitting ? (
-              <Loader2 size={20} className="animate-spin" aria-hidden="true" />
+              <Loader2
+                size={20}
+                className="animate-spin"
+                aria-hidden="true"
+              />
             ) : null}
-            {isLogin ? t('auth.googleLogin') : t('auth.googleSignup')}
+
+            {isLogin
+              ? t('auth.googleLogin')
+              : t('auth.googleSignup')}
           </Button>
 
-          {/* Divider */}
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-gray-300/50" />
-            <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+
+            <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
               {t('auth.orContinueWith')}
             </span>
+
             <div className="h-px flex-1 bg-gray-300/50" />
           </div>
 
-          {/* Email OTP form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-sm font-medium text-gray-700"
+              >
                 {t('auth.email')}
               </label>
+
               <div className="relative">
                 <Mail
                   size={18}
-                  className="absolute top-1/2 -translate-y-1/2 start-3 text-gray-400 pointer-events-none"
+                  className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-gray-400"
                   aria-hidden="true"
                 />
+
                 <input
                   id="email"
                   type="email"
                   required
                   dir="ltr"
+                  autoComplete="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
                   placeholder={t('auth.emailPlaceholder')}
-                  className="w-full rounded-xl border border-gray-300/60 bg-white/40 py-3 ps-10 pe-4 text-gray-900 placeholder:text-gray-400 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400/20 transition-colors"
+                  className="w-full rounded-xl border border-gray-300/60 bg-white/40 py-3 pe-4 ps-10 text-gray-900 placeholder:text-gray-400 transition-colors focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400/20"
                 />
               </div>
             </div>
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            {info && <p className="text-sm text-lime-700">{info}</p>}
+            {error && (
+              <p className="text-sm text-red-600">
+                {error}
+              </p>
+            )}
 
-            <Button type="submit" variant="primary" size="md" className="w-full" disabled={submitting}>
+            {info && (
+              <p className="text-sm text-lime-700">
+                {info}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              className="w-full"
+              disabled={submitting}
+            >
               {submitting ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                  <Loader2
+                    size={18}
+                    className="animate-spin"
+                    aria-hidden="true"
+                  />
+
                   {t('auth.sendingOtp')}
                 </>
               ) : (
                 <>
                   {t('auth.sendOtp')}
-                  <ArrowRight size={18} className="rtl:rotate-180" aria-hidden="true" />
+
+                  <ArrowRight
+                    size={18}
+                    className="rtl:rotate-180"
+                    aria-hidden="true"
+                  />
                 </>
               )}
             </Button>
           </form>
 
-          {/* Switch login/signup */}
           <p className="mt-6 text-center text-sm text-gray-600">
-            {isLogin ? t('auth.noAccount') : t('auth.haveAccount')}{' '}
+            {isLogin
+              ? t('auth.noAccount')
+              : t('auth.haveAccount')}{' '}
+
             <Link
               to={isLogin ? '/signup' : '/login'}
               className="font-semibold text-gray-900 hover:underline"
             >
-              {isLogin ? t('auth.signupLink') : t('auth.loginLink')}
+              {isLogin
+                ? t('auth.signupLink')
+                : t('auth.loginLink')}
             </Link>
           </p>
         </>
@@ -246,40 +343,91 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
         <>
           <div className="mb-6 text-center">
             <button
-              onClick={() => { setStep('email'); setError(null); setInfo(null); }}
-              className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              type="button"
+              onClick={() => {
+                setStep('email');
+                setOtp('');
+                setError(null);
+                setInfo(null);
+              }}
+              className="inline-flex items-center gap-1 text-sm text-gray-500 transition-colors hover:text-gray-700"
             >
-              <ArrowLeft size={16} className="rtl:rotate-180" aria-hidden="true" />
+              <ArrowLeft
+                size={16}
+                className="rtl:rotate-180"
+                aria-hidden="true"
+              />
+
               {t('common.back')}
             </button>
           </div>
 
+          <div className="mb-6 text-center">
+            <p className="text-sm text-gray-600">
+              {t('auth.otpSubtitle')}
+            </p>
+
+            <p
+              dir="ltr"
+              className="mt-1 font-medium text-gray-900"
+            >
+              {email}
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="otp"
+                className="mb-1.5 block text-sm font-medium text-gray-700"
+              >
                 {t('auth.otpSubtitle')}
               </label>
+
               <input
                 id="otp"
                 type="text"
                 required
                 dir="ltr"
                 inputMode="numeric"
+                autoComplete="one-time-code"
                 maxLength={6}
+                pattern="[0-9]{6}"
                 value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                onChange={(event) =>
+                  setOtp(
+                    event.target.value
+                      .replace(/\D/g, '')
+                      .slice(0, 6)
+                  )
+                }
                 placeholder={t('auth.otpPlaceholder')}
-                className="w-full rounded-xl border border-gray-300/60 bg-white/40 py-3 px-4 text-center text-2xl tracking-[0.5em] text-gray-900 placeholder:text-gray-300 placeholder:tracking-normal placeholder:text-base focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400/20 transition-colors"
+                className="w-full rounded-xl border border-gray-300/60 bg-white/40 px-4 py-3 text-center text-2xl tracking-[0.5em] text-gray-900 placeholder:text-base placeholder:tracking-normal placeholder:text-gray-300 transition-colors focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400/20"
                 autoFocus
               />
             </div>
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && (
+              <p className="text-sm text-red-600">
+                {error}
+              </p>
+            )}
 
-            <Button type="submit" variant="primary" size="md" className="w-full" disabled={submitting || otp.length < 6}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              className="w-full"
+              disabled={submitting || otp.length !== 6}
+            >
               {submitting ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                  <Loader2
+                    size={18}
+                    className="animate-spin"
+                    aria-hidden="true"
+                  />
+
                   {t('auth.verifying')}
                 </>
               ) : (
@@ -287,7 +435,6 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
               )}
             </Button>
 
-            {/* Resend */}
             <div className="text-center">
               {cooldown > 0 ? (
                 <p className="text-sm text-gray-400">
@@ -296,8 +443,9 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
               ) : (
                 <button
                   type="button"
-                  onClick={sendOtp}
-                  className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  onClick={() => void sendOtp()}
+                  disabled={submitting}
+                  className="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 disabled:opacity-50"
                 >
                   {t('auth.resendOtp')}
                 </button>
