@@ -1,0 +1,19 @@
+[functions.planbium-checkout]
+verify_jwt = true
+entrypoint = "./functions/planbium-checkout/index.ts"
+
+[functions.planbium-payment]
+verify_jwt = true
+entrypoint = "./functions/planbium-payment/index.ts"
+
+[functions.planbium-webhook]
+verify_jwt = false
+entrypoint = "./functions/planbium-webhook/index.ts"
+
+[functions.planbium-download]
+verify_jwt = true
+entrypoint = "./functions/planbium-download/index.ts"
+
+[functions.planbium-admin]
+verify_jwt = true
+entrypoint = "./functions/planbium-admin/index.ts"
