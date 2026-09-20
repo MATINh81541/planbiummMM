@@ -80,7 +80,6 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
         email: normalizedEmail,
         options: {
           shouldCreateUser: mode === 'signup',
-          emailRedirectTo: undefined,
         },
       });
 
@@ -95,10 +94,11 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
       setInfo(t('auth.otpSent'));
     } catch (err) {
       console.error('OTP send error:', err);
+      const message = err instanceof Error ? err.message : String(err);
       setError(
         mode === 'login'
-          ? t('auth.loginFailed')
-          : t('auth.signupFailed')
+          ? `${t('auth.loginFailed')} (${message})`
+          : `${t('auth.signupFailed')} (${message})`
       );
     } finally {
       setSubmitting(false);
@@ -134,7 +134,7 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
         ) {
           setError(t('auth.otpExpired'));
         } else {
-          setError(t('auth.otpInvalid'));
+          setError(`${t('auth.otpInvalid')} (${verifyError.message})`);
         }
 
         return;
@@ -149,7 +149,8 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
       // useAuth() will receive the new session and redirect automatically.
     } catch (err) {
       console.error('OTP verification error:', err);
-      setError(t('auth.otpInvalid'));
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`${t('auth.otpInvalid')} (${message})`);
     } finally {
       setSubmitting(false);
     }
