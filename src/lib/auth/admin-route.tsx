@@ -3,19 +3,20 @@
  *
  * Checks authenticated + role === 'admin'.
  * Server enforces this too via the admin edge function — this is a UX layer.
+ * The database profile role is the source of truth, never client state.
  */
 
 import { type ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ShieldAlert } from 'lucide-react';
+import { supabase } from '@/lib/supabase-client';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
-import { Link } from 'react-router-dom';
-import { ShieldAlert } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
-import { useEffect, useState } from 'react';
 
 export function AdminRoute({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -23,18 +24,25 @@ export function AdminRoute({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (loading || !user) {
+      setIsAdmin(null);
+      return;
+    }
+    let cancelled = false;
     (async () => {
       const { data } = await supabase
         .from('profiles')
         .select('role')
         .eq('user_id', user.id)
         .maybeSingle();
-      setIsAdmin(data?.role === 'admin');
+      if (!cancelled) {
+        setIsAdmin(data?.role === 'admin');
+      }
     })();
-  }, [user]);
+    return () => { cancelled = true; };
+  }, [user, loading]);
 
-  if (loading || isAdmin === null) {
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="animate-pulse text-gray-400">Loading...</div>
@@ -44,6 +52,14 @@ export function AdminRoute({ children }: { children: ReactNode }) {
 
   if (!user) {
     return <Navigate to="/login?next=/admin" replace />;
+  }
+
+  if (isAdmin === null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="animate-pulse text-gray-400">Loading...</div>
+      </div>
+    );
   }
 
   if (!isAdmin) {

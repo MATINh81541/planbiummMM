@@ -3,7 +3,8 @@
  *
  * Wraps Supabase auth state, exposes user/session/loading to the app.
  * Uses onAuthStateChange with the async deadlock guard pattern.
- * Ensures profile exists after signup.
+ * Handles SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, USER_UPDATED events.
+ * Session persists across browser refresh via Supabase's built-in storage.
  */
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
@@ -25,7 +26,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        console.error('Auth session restore error:', error.message);
+      }
       setSession(data.session);
       setLoading(false);
     });
@@ -37,9 +41,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (event === 'SIGNED_IN' && newSession?.user) {
           try {
             await profileService.ensureProfile();
-          } catch {
-            // Profile creation might fail on RLS edge cases — non-fatal
+          } catch (err) {
+            console.error('Profile creation error:', err instanceof Error ? err.message : err);
           }
+        }
+
+        if (event === 'SIGNED_OUT') {
+          setSession(null);
+        }
+
+        if (event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+          setSession(newSession);
         }
       })();
     });
