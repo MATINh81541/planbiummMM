@@ -263,7 +263,7 @@ export type TranslationKey =
 type TranslationDict = Partial<Record<TranslationKey, string>>;
 
 const en: TranslationDict = {
-  'brand.tagline': 'Beautiful Digital Planners',
+  'brand.tagline': 'green Digital Planners',
   'nav.home': 'Home',
   'nav.pricing': 'Pricing',
   'nav.about': 'About',
