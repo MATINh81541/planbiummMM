@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 import { Package, Download, Loader2 } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { orderService, entitlementService, requestDownloadUrl } from '@/lib/services/entitlement-service';
-import { supabase } from '@/lib/supabase-client';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -52,26 +51,14 @@ export function DashboardPurchasesPage() {
     })();
   }, []);
 
-  async function handleDownload(entitlementId: string, productId: string) {
+  async function handleDownload(entitlementId: string, _productId: string) {
     setDownloadingId(entitlementId);
     setDownloadError(null);
     try {
-      // Get the active asset for this product
-      const { data: assets } = await supabase
-        .from('product_assets')
-        .select('id')
-        .eq('product_id', productId)
-        .eq('active', true)
-        .eq('asset_type', 'planner')
-        .limit(1);
-
-      if (!assets || assets.length === 0) {
-        setDownloadError('File not available yet.');
-        return;
-      }
-
-      const { url } = await requestDownloadUrl(assets[0].id);
-      window.open(url, '_blank', 'noopener,noreferrer');
+      // TODO(backend): resolve the active asset id for this product once the
+      // custom backend is wired up, then mint a short-lived download URL.
+      // The Supabase assets query + download edge function have been removed.
+      await requestDownloadUrl('');
     } catch (err) {
       setDownloadError(err instanceof Error ? err.message : 'Download failed');
     } finally {

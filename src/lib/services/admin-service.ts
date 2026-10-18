@@ -1,32 +1,14 @@
 /*
- * PlanBium admin service (client-side).
+ * PlanBium admin service — temporary demo mode.
  *
- * Calls the planbium-admin edge function.
- * Admin authorization is server-enforced — the edge function checks role === 'admin'.
+ * Supabase and the admin edge function have been removed. All admin
+ * operations throw a clear "backend_unavailable" error. Admin pages catch
+ * these and render empty tables (their existing error/empty handling).
+ * Reimplement against the custom backend when ready.
  */
 
-import { supabase } from '@/lib/supabase-client';
-
-async function callAdmin(action: string, extra: Record<string, unknown> = {}): Promise<Record<string, unknown>> {
-  const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/planbium-admin`;
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${session?.access_token ?? import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-    apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  };
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ action, ...extra }),
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({ error: 'admin_request_failed' }));
-    throw new Error(err.error || `Admin request failed (${response.status})`);
-  }
-  return response.json();
+async function callAdmin(_action: string, _extra: Record<string, unknown> = {}): Promise<Record<string, unknown>> {
+  throw new Error('backend_unavailable');
 }
 
 export const adminService = {

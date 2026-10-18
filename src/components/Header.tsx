@@ -106,11 +106,8 @@ export function Header() {
             <div className="flex items-center gap-2">
               <LanguageSelector />
               <div className="hidden sm:flex items-center gap-2">
-                <Link to="/login">
-                  <Button variant="ghost" size="sm">{t('nav.login')}</Button>
-                </Link>
-                <Link to="/signup">
-                  <Button variant="primary" size="sm">{t('nav.signup')}</Button>
+                <Link to="/dashboard">
+                  <Button variant="primary" size="sm">{t('nav.dashboard')}</Button>
                 </Link>
               </div>
 
@@ -154,11 +151,8 @@ export function Header() {
                 ),
               )}
               <div className="flex gap-2 pt-2">
-                <Link to="/login" className="flex-1" onClick={() => setMobileOpen(false)}>
-                  <Button variant="secondary" size="sm" className="w-full">{t('nav.login')}</Button>
-                </Link>
-                <Link to="/signup" className="flex-1" onClick={() => setMobileOpen(false)}>
-                  <Button variant="primary" size="sm" className="w-full">{t('nav.signup')}</Button>
+                <Link to="/dashboard" className="flex-1" onClick={() => setMobileOpen(false)}>
+                  <Button variant="primary" size="sm" className="w-full">{t('nav.dashboard')}</Button>
                 </Link>
               </div>
             </div>

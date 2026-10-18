@@ -1,17 +1,15 @@
 /*
  * PlanBium environment configuration.
  *
- * CLIENT-SAFE variables are prefixed with VITE_ and are safe to import in browser code.
- * SERVER-ONLY secrets are never exposed to the client — they are used only by edge functions
- * which read them from the Supabase secret store (Deno.env).
+ * Supabase-specific variables have been removed while we prepare a custom
+ * backend. Only generic app config remains. When the new backend is selected,
+ * add its client-safe variables here (prefixed with VITE_).
  *
  * Never commit secrets into source control.
  */
 
 /** Client-safe environment variables (safe for browser code). */
 export const clientEnv = {
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL as string,
-  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY as string,
   appUrl: (import.meta.env.VITE_APP_URL as string) || 'http://localhost:5173',
   environment: (import.meta.env.VITE_APP_ENV as string) || 'development',
 } as const;
@@ -25,18 +23,15 @@ export const appConfig = {
   defaultLocale: 'en' as const,
   defaultCurrency: 'USD' as const,
   checkoutSessionTtlMinutes: 30,
-  signedUrlExpirySeconds: 180, // 3 minutes — short-lived download access
+  signedUrlExpirySeconds: 180,
 } as const;
 
 /**
- * Server-only environment keys used by edge functions.
- * These are read from Deno.env in edge function context, NOT from import.meta.env.
- * Listed here for documentation and contract purposes only.
+ * Server-only environment keys used by the future backend.
+ * Listed here for documentation and contract purposes only — the frontend
+ * never reads these. Populate when the custom backend is connected.
  */
 export const serverEnvKeys = {
-  supabaseUrl: 'SUPABASE_URL',
-  supabaseServiceRoleKey: 'SUPABASE_SERVICE_ROLE_KEY',
-  supabaseAnonKey: 'SUPABASE_ANON_KEY',
   // Payment providers
   zarinpalMerchantId: 'ZARINPAL_MERCHANT_ID',
   zarinpalEnabled: 'ZARINPAL_ENABLED',

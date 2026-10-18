@@ -1,11 +1,12 @@
 /*
- * PlanBium catalog service (client-side).
+ * PlanBium catalog service — temporary demo mode.
  *
- * Reads public active products, prices, and translations via the anon key.
- * All catalog writes (products, prices, translations, assets) are server-side only.
+ * Supabase has been removed. The catalog service now returns an empty active
+ * catalog and null lookups so the pricing UI renders its (existing) empty
+ * state without a backend. The interface is preserved so a custom backend can
+ * be plugged in later without touching consumers.
  */
 
-import { supabase } from '@/lib/supabase-client';
 import type { Product, Price, ProductTranslation } from '@/lib/types';
 import type { LocaleCode } from '@/lib/config/locales';
 import { fallbackLocale } from '@/lib/config/locales';
@@ -16,65 +17,36 @@ export interface ProductWithContent extends Product {
 }
 
 export const catalogService = {
-  /** List all active products. */
+  /** List all active products. Empty in demo mode. */
   async listProducts(): Promise<Product[]> {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('status', 'active')
-      .order('created_at', { ascending: true });
-    if (error) throw error;
-    return data as Product[];
+    return [];
   },
 
-  /** Get a single active product by slug. */
-  async getProductBySlug(slug: string): Promise<Product | null> {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'active')
-      .maybeSingle();
-    if (error) throw error;
-    return data as Product | null;
+  /** Get a single active product by slug. None in demo mode. */
+  async getProductBySlug(_slug: string): Promise<Product | null> {
+    return null;
   },
 
-  /** Get translations for a product, falling back to English if the requested locale is missing. */
-  async getTranslations(productId: string, locale: LocaleCode): Promise<ProductTranslation[]> {
-    const { data, error } = await supabase
-      .from('product_translations')
-      .select('*')
-      .eq('product_id', productId)
-      .in('locale', [locale, fallbackLocale]);
-    if (error) throw error;
-    return (data as ProductTranslation[]) ?? [];
+  /** Get translations for a product. Empty in demo mode. */
+  async getTranslations(_productId: string, _locale: LocaleCode): Promise<ProductTranslation[]> {
+    return [];
   },
 
-  /** Get the best translation for a product (preferred locale, falling back to English). */
-  async getBestTranslation(productId: string, locale: LocaleCode): Promise<ProductTranslation | null> {
-    const translations = await this.getTranslations(productId, locale);
-    return translations.find((t) => t.locale === locale) ?? translations.find((t) => t.locale === fallbackLocale) ?? null;
+  /** Get the best translation for a product. None in demo mode. */
+  async getBestTranslation(_productId: string, _locale: LocaleCode): Promise<ProductTranslation | null> {
+    return null;
   },
 
-  /** Get active prices for a product. */
-  async getPrices(productId: string): Promise<Price[]> {
-    const { data, error } = await supabase
-      .from('prices')
-      .select('*')
-      .eq('product_id', productId)
-      .eq('active', true);
-    if (error) throw error;
-    return (data as Price[]) ?? [];
+  /** Get active prices for a product. Empty in demo mode. */
+  async getPrices(_productId: string): Promise<Price[]> {
+    return [];
   },
 
-  /** Get a product with its translations and prices. */
-  async getProductWithContent(slug: string, locale: LocaleCode): Promise<ProductWithContent | null> {
-    const product = await this.getProductBySlug(slug);
-    if (!product) return null;
-    const [translations, prices] = await Promise.all([
-      this.getTranslations(product.id, locale),
-      this.getPrices(product.id),
-    ]);
-    return { ...product, translations, prices };
+  /** Get a product with its translations and prices. None in demo mode. */
+  async getProductWithContent(_slug: string, _locale: LocaleCode): Promise<ProductWithContent | null> {
+    return null;
   },
 };
+
+// Keep the fallback import referenced for future implementation parity.
+void fallbackLocale;

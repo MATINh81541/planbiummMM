@@ -1,74 +1,53 @@
 /*
- * PlanBium auth context.
+ * PlanBium auth context — temporary demo mode.
  *
- * Wraps Supabase auth state, exposes user/session/loading to the app.
- * Uses onAuthStateChange with the async deadlock guard pattern.
- * Handles SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, USER_UPDATED events.
- * Session persists across browser refresh via Supabase's built-in storage.
+ * Supabase auth has been removed while we prepare a custom backend.
+ * This context now exposes a synthetic demo user so existing dashboard UI
+ * that reads `useAuth()` (avatar, email, account form) keeps rendering.
+ *
+ * No real session exists — actions that require a real backend (checkout,
+ * payments, profile persistence, downloads) intentionally fail and surface
+ * an error rather than pretending to succeed.
  */
 
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase-client';
-import { profileService } from '@/lib/services/profile-service';
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+
+/**
+ * Minimal user shape compatible with the previous Supabase-based consumer code
+ * (email + id only). Components only read `user.email` and `user.id`.
+ */
+export interface DemoUser {
+  id: string;
+  email: string;
+}
 
 interface AuthContextValue {
-  session: Session | null;
-  user: User | null;
+  session: null;
+  user: DemoUser | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+const DEMO_USER: DemoUser = {
+  id: 'demo-user',
+  email: 'demo@planbium.local',
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data, error }) => {
-      if (error) {
-        console.error('Auth session restore error:', error.message);
-      }
-      setSession(data.session);
-      setLoading(false);
-    });
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, newSession) => {
-      (async () => {
-        setSession(newSession);
-
-        if (event === 'SIGNED_IN' && newSession?.user) {
-          try {
-            await profileService.ensureProfile();
-          } catch (err) {
-            console.error('Profile creation error:', err instanceof Error ? err.message : err);
-          }
-        }
-
-        if (event === 'SIGNED_OUT') {
-          setSession(null);
-        }
-
-        if (event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-          setSession(newSession);
-        }
-      })();
-    });
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
-  };
+  const [user] = useState<DemoUser | null>(DEMO_USER);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ session, user: session?.user ?? null, loading, signOut }),
-    [session, loading],
+    () => ({
+      session: null,
+      user,
+      loading: false,
+      signOut: async () => {
+        /* No real session to clear in demo mode. */
+      },
+    }),
+    [user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

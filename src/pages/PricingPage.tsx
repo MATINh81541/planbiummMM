@@ -16,7 +16,6 @@ import { SkeletonCard } from '@/components/ui/Skeleton';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useCatalog } from '@/hooks/useCatalog';
 import { usePendingPurchase } from '@/hooks/usePendingPurchase';
-import { supabase } from '@/lib/supabase-client';
 import { cartService } from '@/lib/services/cart-service';
 
 export function PricingPage() {
@@ -30,24 +29,18 @@ export function PricingPage() {
     async (productId: string) => {
       setSelectingId(productId);
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!session) {
-          // Unauthenticated — preserve selected product, route to auth
-          setPending(productId);
-          navigate('/login?next=/dashboard/cart');
-          return;
+        // Demo mode: no real session check. Try to add to the cart; the cart
+        // service currently throws backend_unavailable, which we treat as a
+        // signal to preserve the selection and send the user to the cart page
+        // (which renders an empty state).
+        try {
+          await cartService.addItem(productId);
+        } catch {
+          // backend unavailable — still route to cart so the user sees the
+          // empty state rather than a silent failure.
         }
-
-        // Authenticated — add to real server-backed cart
-        await cartService.addItem(productId);
-        navigate('/dashboard/cart');
-      } catch {
-        // If cart fails, still preserve the selection
         setPending(productId);
-        navigate('/login?next=/dashboard/cart');
+        navigate('/dashboard/cart');
       } finally {
         setSelectingId(null);
       }

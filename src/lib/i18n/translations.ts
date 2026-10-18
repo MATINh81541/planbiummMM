@@ -19,6 +19,7 @@ export type TranslationKey =
   | 'nav.faq'
   | 'nav.login'
   | 'nav.signup'
+  | 'nav.dashboard'
   | 'nav.contact'
   | 'nav.menu'
   | 'nav.close'
@@ -270,6 +271,7 @@ const en: TranslationDict = {
   'nav.faq': 'FAQ',
   'nav.login': 'Login',
   'nav.signup': 'Sign Up',
+  'nav.dashboard': 'Dashboard',
   'nav.contact': 'Contact',
   'nav.menu': 'Menu',
   'nav.close': 'Close',
@@ -538,6 +540,7 @@ const fa: TranslationDict = {
   'nav.faq': 'سوالات متداول',
   'nav.login': 'ورود',
   'nav.signup': 'ثبت‌نام',
+  'nav.dashboard': 'داشبورد',
   'nav.contact': 'تماس',
   'nav.menu': 'منو',
   'nav.close': 'بستن',
@@ -704,6 +707,7 @@ const ar: TranslationDict = {
   'nav.faq': 'الأسئلة الشائعة',
   'nav.login': 'تسجيل الدخول',
   'nav.signup': 'إنشاء حساب',
+  'nav.dashboard': 'لوحة التحكم',
   'nav.contact': 'اتصل بنا',
   'nav.menu': 'القائمة',
   'nav.close': 'إغلاق',
@@ -870,6 +874,7 @@ const zhHans: TranslationDict = {
   'nav.faq': '常见问题',
   'nav.login': '登录',
   'nav.signup': '注册',
+  'nav.dashboard': '控制台',
   'nav.contact': '联系',
   'nav.menu': '菜单',
   'nav.close': '关闭',
@@ -1036,6 +1041,7 @@ const nl: TranslationDict = {
   'nav.faq': 'FAQ',
   'nav.login': 'Inloggen',
   'nav.signup': 'Aanmelden',
+  'nav.dashboard': 'Dashboard',
   'nav.contact': 'Contact',
   'nav.menu': 'Menu',
   'nav.close': 'Sluiten',
@@ -1202,6 +1208,7 @@ const es: TranslationDict = {
   'nav.faq': 'Preguntas frecuentes',
   'nav.login': 'Iniciar sesión',
   'nav.signup': 'Registrarse',
+  'nav.dashboard': 'Panel',
   'nav.contact': 'Contacto',
   'nav.menu': 'Menú',
   'nav.close': 'Cerrar',

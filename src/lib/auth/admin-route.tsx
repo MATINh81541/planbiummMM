@@ -1,81 +1,25 @@
 /*
- * PlanBium admin route guard.
+ * PlanBium admin route guard — temporary demo mode.
  *
- * Checks authenticated + role === 'admin'.
- * Server enforces this too via the admin edge function — this is a UX layer.
- * The database profile role is the source of truth, never client state.
+ * Previously checked `profiles.role === 'admin'` via Supabase. With Supabase
+ * removed, the admin area is gated by a simple demo flag so the UI stays
+ * reachable for development. Reintroduce a real server-side role check when
+ * the custom backend is connected.
  */
 
 import { type ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { ShieldAlert } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
-import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
-import { useLocale } from '@/lib/i18n/locale-context';
-import { Container } from '@/components/ui/Container';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { Button } from '@/components/ui/Button';
 
 export function AdminRoute({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
-  const { t } = useLocale();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    if (loading || !user) {
-      setIsAdmin(null);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('user_id', user.id)
-        .maybeSingle();
-      if (!cancelled) {
-        setIsAdmin(data?.role === 'admin');
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [user, loading]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="animate-pulse text-gray-400">Loading...</div>
-      </div>
-    );
-  }
-
+  // Demo mode: any signed-in demo user can view the admin UI.
+  // Admin data is empty/mock until the backend exists.
   if (!user) {
-    return <Navigate to="/login?next=/admin" replace />;
-  }
-
-  if (isAdmin === null) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="animate-pulse text-gray-400">Loading...</div>
       </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <Container size="sm">
-        <div className="flex min-h-screen items-center justify-center">
-          <GlassCard variant="strong" className="p-8 text-center">
-            <ShieldAlert size={48} className="mx-auto text-amber-500 mb-4" aria-hidden="true" />
-            <h1 className="text-xl font-bold text-gray-900 mb-2">{t('admin.notAdmin')}</h1>
-            <p className="text-gray-500 mb-6">{t('admin.notAdminDescription')}</p>
-            <Link to="/dashboard">
-              <Button variant="primary" size="md">{t('common.backHome')}</Button>
-            </Link>
-          </GlassCard>
-        </div>
-      </Container>
     );
   }
 

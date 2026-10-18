@@ -1,50 +1,27 @@
 /*
- * PlanBium checkout service (client-side).
+ * PlanBium checkout service — temporary demo mode.
  *
- * Calls the checkout edge function which re-derives all business truth server-side.
- * The client never sends prices, currency, provider, or totals — only the billing country
- * and checkout session reference.
+ * Supabase and the checkout edge function have been removed. All checkout
+ * operations throw a clear "backend_unavailable" error so the UI surfaces a
+ * real failure instead of faking a checkout session. Reimplement against the
+ * custom backend when ready.
  */
 
-import { supabase } from '@/lib/supabase-client';
 import type { CheckoutResponse } from '@/lib/types';
 
-async function callCheckoutEndpoint(action: string, body: Record<string, unknown>): Promise<CheckoutResponse> {
-  const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/planbium-checkout`;
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${session?.access_token ?? import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-    apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  };
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ action, ...body }),
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({ error: 'checkout_failed' }));
-    throw new Error(err.error || `Checkout request failed (${response.status})`);
-  }
-  const result = await response.json();
-  return result as CheckoutResponse;
-}
-
 export const checkoutService = {
-  /** Create a new checkout session. The server observes IP country and returns needs_country or ready. */
+  /** Create a new checkout session. Unavailable in demo mode. */
   async createCheckout(): Promise<CheckoutResponse> {
-    return callCheckoutEndpoint('create', {});
+    throw new Error('backend_unavailable');
   },
 
-  /** Confirm billing country for an existing checkout session. */
-  async confirmCountry(sessionId: string, billingCountry: string): Promise<CheckoutResponse> {
-    return callCheckoutEndpoint('confirm_country', { sessionId, billingCountry });
+  /** Confirm billing country for an existing checkout session. Unavailable in demo mode. */
+  async confirmCountry(_sessionId: string, _billingCountry: string): Promise<CheckoutResponse> {
+    throw new Error('backend_unavailable');
   },
 
-  /** Get the current state of a checkout session. */
-  async getCheckout(sessionId: string): Promise<CheckoutResponse> {
-    return callCheckoutEndpoint('get', { sessionId });
+  /** Get the current state of a checkout session. Unavailable in demo mode. */
+  async getCheckout(_sessionId: string): Promise<CheckoutResponse> {
+    throw new Error('backend_unavailable');
   },
 };

@@ -1,16 +1,17 @@
 /*
  * PlanBium application root.
  *
- * Wraps the app in LocaleProvider, AuthProvider, and sets up routing.
- * Public routes use PublicLayout; dashboard routes use DashboardLayout + ProtectedRoute.
- * Admin routes use AdminLayout + AdminRoute (server-enforced admin authorization).
+ * Supabase auth has been temporarily removed while we prepare a custom backend.
+ * The public marketing site still renders at /home, /pricing, etc., but the
+ * default landing route (/) redirects to /dashboard so the app opens straight
+ * to the dashboard in demo mode. Login/signup routes redirect to /dashboard.
  */
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LocaleProvider } from '@/lib/i18n/locale-context';
 import { AuthProvider } from '@/lib/auth/auth-context';
 import { DashboardThemeProvider } from '@/lib/dashboard-theme';
-import { ProtectedRoute, GuestOnlyRoute } from '@/lib/auth/protected-route';
+import { ProtectedRoute } from '@/lib/auth/protected-route';
 import { AdminRoute } from '@/lib/auth/admin-route';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
@@ -42,9 +43,12 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public routes */}
+            {/* Root opens the dashboard directly (demo mode) */}
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+            {/* Public marketing routes */}
             <Route element={<PublicLayout />}>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/legal/terms" element={<LegalPage type="terms" />} />
@@ -53,15 +57,9 @@ export default function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
 
-            {/* Auth routes (guest only) */}
-            <Route path="/login" element={
-              <GuestOnlyRoute><AuthPage mode="login" /></GuestOnlyRoute>
-            } />
-            <Route path="/signup" element={
-              <GuestOnlyRoute><AuthPage mode="signup" /></GuestOnlyRoute>
-            } />
-
-            {/* Auth callback + error (no layout) */}
+            {/* Auth routes — temporarily disabled, redirect to dashboard */}
+            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/auth/error" element={<AuthErrorPage />} />
 

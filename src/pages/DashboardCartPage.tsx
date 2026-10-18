@@ -22,6 +22,8 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import type { CartItem, Product, ProductTranslation, Price } from '@/lib/types';
 
+// TODO(backend): re-enable direct product lookups once the custom backend is wired up.
+
 interface CartDisplayItem {
   cartItem: CartItem;
   product: Product;
@@ -52,24 +54,29 @@ export function DashboardCartPage() {
         return;
       }
 
-      // Enrich with product data, translations, prices, and ownership
+      // Enrich with product data, translations, prices, and ownership.
+      // In demo mode the catalog is empty, so cart items (if any) fall back to
+      // a minimal placeholder product. A real backend will populate these.
+      const activeProducts = await catalogService.listProducts();
       const enriched: CartDisplayItem[] = await Promise.all(
         cartItems.map(async (ci) => {
-          // Fetch product directly by ID
-          const { data: prod } = await supabase
-            .from('products')
-            .select('*')
-            .eq('id', ci.product_id)
-            .maybeSingle();
-
-          const p = prod as Product | null;
+          const p =
+            activeProducts.find((prod) => prod.id === ci.product_id) ??
+            null;
           const translation = p ? await catalogService.getBestTranslation(p.id, locale) : null;
           const prices = p ? await catalogService.getPrices(p.id) : [];
           const owned = await entitlementService.hasEntitlement(ci.product_id);
 
           return {
             cartItem: ci,
-            product: p ?? { id: ci.product_id, slug: '', status: 'archived', metadata: {}, created_at: '', updated_at: '' },
+            product: p ?? {
+              id: ci.product_id,
+              slug: '',
+              status: 'archived',
+              metadata: {},
+              created_at: '',
+              updated_at: '',
+            },
             translation,
             price: prices[0] ?? null,
             owned,
@@ -236,5 +243,4 @@ export function DashboardCartPage() {
   );
 }
 
-// Helper: fetch product by ID directly from Supabase
-import { supabase } from '@/lib/supabase-client';
+

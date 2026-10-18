@@ -1,105 +1,47 @@
 /*
- * PlanBium entitlement & download service (client-side).
+ * PlanBium entitlement & download service — temporary demo mode.
  *
- * Entitlements are the authoritative source for protected download access.
- * The actual signed-URL generation happens server-side via the download edge function.
- * The client never receives permanent public URLs.
+ * Supabase has been removed. Entitlements/orders return empty lists and
+ * download URL requests throw a clear "backend unavailable" error. No fake
+ * entitlements or downloads are produced. Reimplement against the custom
+ * backend when ready.
  */
 
-import { supabase } from '@/lib/supabase-client';
 import type { Entitlement, Order, OrderItem, Payment } from '@/lib/types';
 
 export const entitlementService = {
-  /** List the user's active entitlements. */
+  /** List the user's active entitlements. Empty in demo mode. */
   async listEntitlements(): Promise<Entitlement[]> {
-    const { data, error } = await supabase
-      .from('entitlements')
-      .select('*')
-      .eq('status', 'active')
-      .order('granted_at', { ascending: false });
-    if (error) throw error;
-    return (data as Entitlement[]) ?? [];
+    return [];
   },
 
-  /** Check if the user has an active entitlement for a product. */
-  async hasEntitlement(productId: string): Promise<boolean> {
-    const { data, error } = await supabase
-      .from('entitlements')
-      .select('id')
-      .eq('product_id', productId)
-      .eq('status', 'active')
-      .maybeSingle();
-    if (error) throw error;
-    return data !== null;
+  /** Check if the user has an active entitlement for a product. Never in demo mode. */
+  async hasEntitlement(_productId: string): Promise<boolean> {
+    return false;
   },
 };
 
 export const orderService = {
-  /** List the user's orders. */
+  /** List the user's orders. Empty in demo mode. */
   async listOrders(): Promise<Order[]> {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    return (data as Order[]) ?? [];
+    return [];
   },
 
-  /** Get a specific order with its items (ownership checked via RLS). */
-  async getOrder(orderId: string): Promise<{ order: Order | null; items: OrderItem[] }> {
-    const { data: order, error: orderErr } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('id', orderId)
-      .maybeSingle();
-    if (orderErr) throw orderErr;
-    if (!order) return { order: null, items: [] };
-    const { data: items, error: itemsErr } = await supabase
-      .from('order_items')
-      .select('*')
-      .eq('order_id', orderId);
-    if (itemsErr) throw itemsErr;
-    return { order: order as Order, items: (items as OrderItem[]) ?? [] };
+  /** Get a specific order with its items. None in demo mode. */
+  async getOrder(_orderId: string): Promise<{ order: Order | null; items: OrderItem[] }> {
+    return { order: null, items: [] };
   },
 
-  /** Get payments for an order (ownership checked via RLS). */
-  async getPayments(orderId: string): Promise<Payment[]> {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*')
-      .eq('order_id', orderId)
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    return (data as Payment[]) ?? [];
+  /** Get payments for an order. Empty in demo mode. */
+  async getPayments(_orderId: string): Promise<Payment[]> {
+    return [];
   },
 };
 
 /**
- * Request a short-lived download URL from the download edge function.
- * The edge function verifies entitlement, logs the download, and returns a signed URL.
+ * Request a short-lived download URL. Unavailable in demo mode — the backend
+ * that verifies entitlement and mints signed URLs has been removed.
  */
-export async function requestDownloadUrl(assetId: string): Promise<{ url: string; expiresAt: string }> {
-  const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/planbium-download`;
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${session?.access_token ?? import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-    apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  };
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ assetId }),
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({ error: 'download_failed' }));
-    throw new Error(err.error || `Download request failed (${response.status})`);
-  }
-  const result = await response.json();
-  if (!result.url || !result.expiresAt) {
-    throw new Error('Invalid download response');
-  }
-  return { url: result.url, expiresAt: result.expiresAt };
+export async function requestDownloadUrl(_assetId: string): Promise<{ url: string; expiresAt: string }> {
+  throw new Error('backend_unavailable');
 }
