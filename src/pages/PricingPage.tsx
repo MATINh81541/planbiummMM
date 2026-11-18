@@ -18,6 +18,7 @@ import { useCatalog } from '@/hooks/useCatalog';
 import { usePendingPurchase } from '@/hooks/usePendingPurchase';
 import { cartService } from '@/lib/services/cart-service';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 export function PricingPage() {
   const { t } = useLocale();
@@ -26,6 +27,7 @@ export function PricingPage() {
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
   useDocumentTitle('page.title.pricing');
+  const { showToast } = useToast();
 
   const handleSelect = useCallback(
     async (productId: string) => {
@@ -38,8 +40,7 @@ export function PricingPage() {
         try {
           await cartService.addItem(productId);
         } catch {
-          // backend unavailable — still route to cart so the user sees the
-          // empty state rather than a silent failure.
+          showToast('error', t('toast.cartAddFailed'));
         }
         setPending(productId);
         navigate('/dashboard/cart');

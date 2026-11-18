@@ -10,6 +10,7 @@ import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 interface AdminUser {
   user_id: string;
@@ -25,6 +26,7 @@ export function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   useDocumentTitle('page.title.adminUsers');
+  const { showToast } = useToast();
 
   useEffect(() => {
     (async () => {
@@ -32,7 +34,7 @@ export function AdminUsersPage() {
       try {
         const result = await adminService.listUsers();
         setUsers((result.users as AdminUser[]) ?? []);
-      } catch { setUsers([]); } finally { setLoading(false); }
+      } catch { showToast('error', t('toast.adminLoadFailed')); setUsers([]); } finally { setLoading(false); }
     })();
   }, []);
 

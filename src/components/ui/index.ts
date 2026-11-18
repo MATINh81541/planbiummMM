@@ -4,3 +4,5 @@ export { Container } from '@/components/ui/Container';
 export { Skeleton, SkeletonCard } from '@/components/ui/Skeleton';
 export { Accordion, AccordionItem } from '@/components/ui/Accordion';
 export { Badge } from '@/components/ui/Badge';
+export { ToastProvider, useToast } from '@/components/ui/Toast';
+export type { ToastType } from '@/components/ui/Toast';

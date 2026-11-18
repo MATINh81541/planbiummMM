@@ -19,6 +19,7 @@ import { FluidBackground } from '@/components/FluidBackground';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { BrandLogo } from '@/components/BrandLogo';
 import { profileService } from '@/lib/services/profile-service';
+import { useToast } from '@/components/ui/Toast';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -31,6 +32,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const { showToast } = useToast();
 
   const navItems = [
     { to: '/dashboard/pricing', label: t('dashboard.nav.pricing'), icon: LayoutGrid },
@@ -51,7 +53,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     try {
       await profileService.updateProfile({ dashboard_theme: newTheme });
     } catch {
-      // Profile update may fail — theme still persists locally
+      showToast('error', t('toast.profileSaveFailed'));
     }
   }
 

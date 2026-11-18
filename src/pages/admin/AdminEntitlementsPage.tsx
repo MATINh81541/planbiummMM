@@ -11,6 +11,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 interface AdminEntitlement {
   id: string;
@@ -27,20 +28,21 @@ export function AdminEntitlementsPage() {
   const [loading, setLoading] = useState(true);
   const [actionId, setActionId] = useState<string | null>(null);
   useDocumentTitle('page.title.adminEntitlements');
+  const { showToast } = useToast();
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const result = await adminService.listEntitlements();
       setEntitlements((result.entitlements as AdminEntitlement[]) ?? []);
-    } catch { setEntitlements([]); } finally { setLoading(false); }
+    } catch { showToast('error', t('toast.adminLoadFailed')); setEntitlements([]); } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
   async function handleRevoke(id: string) {
     setActionId(id);
-    try { await adminService.revokeEntitlement(id); await load(); } finally { setActionId(null); }
+    try { await adminService.revokeEntitlement(id); await load(); } catch { showToast('error', t('toast.adminActionFailed')); } finally { setActionId(null); }
   }
 
   return (

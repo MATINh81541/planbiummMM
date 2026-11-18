@@ -21,6 +21,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 import type { CartItem, Product, ProductTranslation, Price } from '@/lib/types';
 
 // TODO(backend): re-enable direct product lookups once the custom backend is wired up.
@@ -44,6 +45,7 @@ export function DashboardCartPage() {
   const [restoring, setRestoring] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
   useDocumentTitle('page.title.cart');
+  const { showToast } = useToast();
 
   const loadCart = useCallback(async () => {
     setLoading(true);
@@ -88,6 +90,7 @@ export function DashboardCartPage() {
 
       setItems(enriched);
     } catch {
+      showToast('error', t('toast.cartLoadFailed'));
       setItems([]);
     } finally {
       setLoading(false);
@@ -107,7 +110,7 @@ export function DashboardCartPage() {
         }
         clearPending();
       } catch {
-        // Non-fatal — the user can still browse
+        showToast('error', t('toast.cartRestoreFailed'));
       } finally {
         setRestoring(false);
       }
@@ -127,7 +130,7 @@ export function DashboardCartPage() {
       await cartService.removeItem(itemId);
       await loadCart();
     } catch {
-      // ignore
+      showToast('error', t('toast.cartRemoveFailed'));
     } finally {
       setRemovingId(null);
     }

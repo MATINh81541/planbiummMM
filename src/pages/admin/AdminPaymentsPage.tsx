@@ -8,6 +8,7 @@ import { useLocale } from '@/lib/i18n/locale-context';
 import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 import { GlassCard } from '@/components/ui/GlassCard';
 
 interface AdminPayment {
@@ -27,6 +28,7 @@ export function AdminPaymentsPage() {
   const [payments, setPayments] = useState<AdminPayment[]>([]);
   const [loading, setLoading] = useState(true);
   useDocumentTitle('page.title.adminPayments');
+  const { showToast } = useToast();
 
   useEffect(() => {
     (async () => {
@@ -34,7 +36,7 @@ export function AdminPaymentsPage() {
       try {
         const result = await adminService.listPayments();
         setPayments((result.payments as AdminPayment[]) ?? []);
-      } catch { setPayments([]); } finally { setLoading(false); }
+      } catch { showToast('error', t('toast.adminLoadFailed')); setPayments([]); } finally { setLoading(false); }
     })();
   }, []);
 

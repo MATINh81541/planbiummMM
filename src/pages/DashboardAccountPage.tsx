@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import type { Profile } from '@/lib/types';
 import type { LocaleCode } from '@/lib/config/locales';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 export function DashboardAccountPage() {
   const { t, locale, setLocale } = useLocale();
@@ -30,6 +31,7 @@ export function DashboardAccountPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { showToast } = useToast();
 
   const [displayName, setDisplayName] = useState('');
   const [preferredLocale, setPreferredLocale] = useState<LocaleCode | ''>('');
@@ -49,7 +51,7 @@ export function DashboardAccountPage() {
           setDashboardTheme(p.dashboard_theme ?? 'gray');
         }
       } catch {
-        // ignore
+        showToast('error', t('toast.profileLoadFailed'));
       } finally {
         setLoading(false);
       }
@@ -81,9 +83,11 @@ export function DashboardAccountPage() {
       }
 
       setSaved(true);
+      showToast('success', t('toast.profileSaved'));
       setTimeout(() => setSaved(false), 3000);
     } catch {
       setError(t('account.error'));
+      showToast('error', t('toast.profileSaveFailed'));
     } finally {
       setSaving(false);
     }

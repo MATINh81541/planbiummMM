@@ -278,6 +278,28 @@ export type TranslationKey =
   | 'page.title.adminPayments'
   | 'page.title.adminEntitlements'
   | 'page.title.adminUsers'
+  // Toast notifications
+  | 'toast.addedToCart'
+  | 'toast.cartAddFailed'
+  | 'toast.profileSaved'
+  | 'toast.profileSaveFailed'
+  | 'toast.profileLoadFailed'
+  | 'toast.downloadFailed'
+  | 'toast.cartLoadFailed'
+  | 'toast.cartRemoveFailed'
+  | 'toast.cartRestoreFailed'
+  | 'toast.checkoutFailed'
+  | 'toast.countryUpdateFailed'
+  | 'toast.paymentFailed'
+  | 'toast.purchasesLoadFailed'
+  | 'toast.adminLoadFailed'
+  | 'toast.adminActionFailed'
+  | 'toast.contactSent'
+  | 'toast.genericError'
+  // Error boundary
+  | 'errorBoundary.title'
+  | 'errorBoundary.description'
+  | 'errorBoundary.reload'
   // Error codes
   | `error.${ErrorCode}`;
 
@@ -541,6 +563,28 @@ const en: TranslationDict = {
   'page.title.adminPayments': 'Manage Payments',
   'page.title.adminEntitlements': 'Manage Entitlements',
   'page.title.adminUsers': 'Manage Users',
+  // Toast notifications
+  'toast.addedToCart': 'Added to cart',
+  'toast.cartAddFailed': 'Could not add to cart. Please try again.',
+  'toast.profileSaved': 'Profile saved',
+  'toast.profileSaveFailed': 'Could not save changes. Please try again.',
+  'toast.profileLoadFailed': 'Could not load your profile.',
+  'toast.downloadFailed': 'Download failed. Please try again.',
+  'toast.cartLoadFailed': 'Could not load your cart.',
+  'toast.cartRemoveFailed': 'Could not remove item. Please try again.',
+  'toast.cartRestoreFailed': 'Could not restore your selected product.',
+  'toast.checkoutFailed': 'Could not start checkout. Please try again.',
+  'toast.countryUpdateFailed': 'Could not update country. Please try again.',
+  'toast.paymentFailed': 'Payment could not be completed. Please try again.',
+  'toast.purchasesLoadFailed': 'Could not load your purchases.',
+  'toast.adminLoadFailed': 'Could not load data.',
+  'toast.adminActionFailed': 'Action failed. Please try again.',
+  'toast.contactSent': 'Message sent!',
+  'toast.genericError': 'Something went wrong. Please try again.',
+  // Error boundary
+  'errorBoundary.title': 'Something went wrong',
+  'errorBoundary.description': 'An unexpected error occurred. Please reload the page to continue.',
+  'errorBoundary.reload': 'Reload',
   // Error codes
   'error.unauthorized': 'Please sign in to continue.',
   'error.forbidden': 'You do not have access to this.',
@@ -757,6 +801,28 @@ const fa: TranslationDict = {
   'page.title.adminPayments': 'مدیریت پرداخت‌ها',
   'page.title.adminEntitlements': 'مدیریت دسترسی‌ها',
   'page.title.adminUsers': 'مدیریت کاربران',
+  // Toast notifications
+  'toast.addedToCart': 'به سبد اضافه شد',
+  'toast.cartAddFailed': 'افزودن به سبد ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'toast.profileSaved': 'پروفایل ذخیره شد',
+  'toast.profileSaveFailed': 'ذخیره تغییرات ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'toast.profileLoadFailed': 'بارگذاری پروفایل ممکن نشد.',
+  'toast.downloadFailed': 'دانلود ناموفق بود. لطفاً دوباره تلاش کنید.',
+  'toast.cartLoadFailed': 'بارگذاری سبد ممکن نشد.',
+  'toast.cartRemoveFailed': 'حذف مورد ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'toast.cartRestoreFailed': 'بازیابی محصول انتخاب‌شده ممکن نشد.',
+  'toast.checkoutFailed': 'شروع پرداخت ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'toast.countryUpdateFailed': 'به‌روزرسانی کشور ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'toast.paymentFailed': 'پرداخت تکمیل نشد. لطفاً دوباره تلاش کنید.',
+  'toast.purchasesLoadFailed': 'بارگذاری خریدها ممکن نشد.',
+  'toast.adminLoadFailed': 'بارگذاری داده‌ها ممکن نشد.',
+  'toast.adminActionFailed': 'عملیات ناموفق بود. لطفاً دوباره تلاش کنید.',
+  'toast.contactSent': 'پیام ارسال شد!',
+  'toast.genericError': 'خطایی رخ داد. لطفاً دوباره تلاش کنید.',
+  // Error boundary
+  'errorBoundary.title': 'خطایی رخ داد',
+  'errorBoundary.description': 'خطای غیرمنتظره‌ای رخ داد. لطفاً صفحه را بازنشانی کنید.',
+  'errorBoundary.reload': 'بازنشانی',
 };
 
 const ar: TranslationDict = {

@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { PricingCard } from '@/components/PricingCard';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 export function DashboardPricingPage() {
   const { t } = useLocale();
@@ -25,6 +26,7 @@ export function DashboardPricingPage() {
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
   useDocumentTitle('page.title.dashboardPricing');
+  const { showToast } = useToast();
 
   const handleSelect = useCallback(async (productId: string) => {
     setSelectingId(productId);
@@ -36,9 +38,10 @@ export function DashboardPricingPage() {
         return;
       }
       await cartService.addItem(productId);
+      showToast('success', t('toast.addedToCart'));
       navigate('/dashboard/cart');
     } catch {
-      // ignore
+      showToast('error', t('toast.cartAddFailed'));
     } finally {
       setSelectingId(null);
     }

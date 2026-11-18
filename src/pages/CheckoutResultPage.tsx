@@ -16,6 +16,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 const MAX_POLLS = 10;
 const POLL_INTERVAL_MS = 3000;
@@ -26,6 +27,7 @@ export function CheckoutResultPage() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('order') ?? '';
   useDocumentTitle('page.title.checkoutResult');
+  const { showToast } = useToast();
 
   const [orderStatus, setOrderStatus] = useState<string>('pending');
   const [paymentStatus, setPaymentStatus] = useState<string>('processing');
@@ -51,6 +53,7 @@ export function CheckoutResultPage() {
     } catch {
       setLoading(false);
       setPaymentStatus('failed');
+      showToast('error', t('toast.paymentFailed'));
     }
   }, [orderId, pollCount]);
 

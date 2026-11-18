@@ -15,6 +15,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 import type { Order, OrderItem, Entitlement } from '@/lib/types';
 
 interface PurchaseDisplay {
@@ -30,6 +31,7 @@ export function DashboardPurchasesPage() {
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   useDocumentTitle('page.title.purchases');
+  const { showToast } = useToast();
 
   useEffect(() => {
     (async () => {
@@ -46,6 +48,7 @@ export function DashboardPurchasesPage() {
         );
         setPurchases(enriched);
       } catch {
+        showToast('error', t('toast.purchasesLoadFailed'));
         setPurchases([]);
       } finally {
         setLoading(false);
@@ -63,6 +66,7 @@ export function DashboardPurchasesPage() {
       await requestDownloadUrl('');
     } catch (err) {
       setDownloadError(err instanceof Error ? err.message : 'Download failed');
+      showToast('error', t('toast.downloadFailed'));
     } finally {
       setDownloadingId(null);
     }

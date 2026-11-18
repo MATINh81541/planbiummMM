@@ -11,6 +11,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 interface AdminProduct {
   id: string;
@@ -27,6 +28,7 @@ export function AdminProductsPage() {
   const [newSlug, setNewSlug] = useState('');
   const [creating, setCreating] = useState(false);
   useDocumentTitle('page.title.adminProducts');
+  const { showToast } = useToast();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -34,6 +36,7 @@ export function AdminProductsPage() {
       const result = await adminService.listProducts();
       setProducts((result.products as AdminProduct[]) ?? []);
     } catch {
+      showToast('error', t('toast.adminLoadFailed'));
       setProducts([]);
     } finally {
       setLoading(false);
@@ -44,18 +47,18 @@ export function AdminProductsPage() {
 
   async function handleArchive(id: string) {
     setActionId(id);
-    try { await adminService.archiveProduct(id); await load(); } finally { setActionId(null); }
+    try { await adminService.archiveProduct(id); await load(); } catch { showToast('error', t('toast.adminActionFailed')); } finally { setActionId(null); }
   }
 
   async function handleActivate(id: string) {
     setActionId(id);
-    try { await adminService.activateProduct(id); await load(); } finally { setActionId(null); }
+    try { await adminService.activateProduct(id); await load(); } catch { showToast('error', t('toast.adminActionFailed')); } finally { setActionId(null); }
   }
 
   async function handleCreate() {
     if (!newSlug.trim()) return;
     setCreating(true);
-    try { await adminService.createProduct(newSlug.trim()); setNewSlug(''); await load(); } finally { setCreating(false); }
+    try { await adminService.createProduct(newSlug.trim()); setNewSlug(''); await load(); } catch { showToast('error', t('toast.adminActionFailed')); } finally { setCreating(false); }
   }
 
   return (

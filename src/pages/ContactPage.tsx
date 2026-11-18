@@ -11,6 +11,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 export function ContactPage() {
   const { t } = useLocale();
@@ -19,6 +20,7 @@ export function ContactPage() {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   useDocumentTitle('page.title.contact');
+  const { showToast } = useToast();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -27,11 +29,13 @@ export function ContactPage() {
       // Placeholder: will be connected to an edge function or email service in a later prompt
       await new Promise((resolve) => setTimeout(resolve, 800));
       setStatus('sent');
+      showToast('success', t('toast.contactSent'));
       setName('');
       setEmail('');
       setMessage('');
     } catch {
       setStatus('error');
+      showToast('error', t('contact.error'));
     }
   }
 

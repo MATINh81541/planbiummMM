@@ -14,6 +14,8 @@ import { DashboardThemeProvider } from '@/lib/dashboard-theme';
 import { ProtectedRoute } from '@/lib/auth/protected-route';
 import { AdminRoute } from '@/lib/auth/admin-route';
 import { ScrollToTop } from '@/components/ScrollToTop';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ToastProvider } from '@/components/ui/Toast';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { AdminLayout } from '@/layouts/AdminLayout';
@@ -39,11 +41,13 @@ import { AdminUsersPage } from '@/pages/admin/AdminUsersPage';
 
 export default function App() {
   return (
-    <LocaleProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
+    <ErrorBoundary>
+      <LocaleProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
             {/* Public marketing routes */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
@@ -99,8 +103,10 @@ export default function App() {
               </AdminRoute>
             } />
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </LocaleProvider>
+            </BrowserRouter>
+          </AuthProvider>
+        </ToastProvider>
+      </LocaleProvider>
+    </ErrorBoundary>
   );
 }

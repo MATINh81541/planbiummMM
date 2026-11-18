@@ -20,6 +20,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useToast } from '@/components/ui/Toast';
 
 const SUPPORTED_COUNTRIES = ['IR', 'NL', 'ES', 'CN', 'US', 'GB', 'CA', 'AU', 'SA', 'AE', 'EG', 'IQ'];
 
@@ -42,6 +43,7 @@ export function CheckoutPage() {
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   useDocumentTitle('page.title.checkout');
+  const { showToast } = useToast();
 
   // Create checkout session on mount
   useEffect(() => {
@@ -61,6 +63,7 @@ export function CheckoutPage() {
           return;
         }
         setError(msg);
+        showToast('error', t('toast.checkoutFailed'));
       } finally {
         setLoading(false);
       }
@@ -77,6 +80,7 @@ export function CheckoutPage() {
       setSelectedMethod('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update country');
+      showToast('error', t('toast.countryUpdateFailed'));
     } finally {
       setChangingCountry(false);
     }
@@ -111,6 +115,7 @@ export function CheckoutPage() {
         setPayError(t('error.method_not_allowed'));
       } else {
         setPayError(msg);
+        showToast('error', t('toast.paymentFailed'));
       }
     } finally {
       setPaying(false);
