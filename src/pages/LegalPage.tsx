@@ -1,6 +1,8 @@
 /*
- * PlanBium legal page (terms, privacy, refunds).
- * The visual layout is ready; finalized legal copy will be populated later.
+ * PlanBium legal page (terms, privacy, refunds, cookies).
+ * Renders sectioned legal content with fixed last-updated dates.
+ *
+ * <!-- REVIEW WITH A LEGAL ADVISOR BEFORE LAUNCH -->
  */
 
 import { FileText } from 'lucide-react';
@@ -9,29 +11,25 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-
-type LegalType = 'terms' | 'privacy' | 'refunds';
+import { legalDocuments, type LegalType } from '@/lib/legal-content';
 
 interface LegalPageProps {
   type: LegalType;
 }
 
 export function LegalPage({ type }: LegalPageProps) {
-  const { t } = useLocale();
+  const { t, formatDate } = useLocale();
+  const doc = legalDocuments[type];
 
-  const titleKey =
-    type === 'terms'
-      ? 'legal.terms.title'
-      : type === 'privacy'
-        ? 'legal.privacy.title'
-        : 'legal.refunds.title';
-
+  const titleKey = `legal.${type}.title` as const;
   const pageTitleKey =
     type === 'terms'
       ? 'page.title.terms'
       : type === 'privacy'
         ? 'page.title.privacy'
-        : 'page.title.refunds';
+        : type === 'refunds'
+          ? 'page.title.refunds'
+          : 'page.title.cookies';
 
   useDocumentTitle(pageTitleKey);
 
@@ -48,15 +46,28 @@ export function LegalPage({ type }: LegalPageProps) {
               {t(titleKey)}
             </h1>
             <p className="mt-2 text-sm text-gray-400">
-              {t('legal.lastUpdated')}: {new Date().toLocaleDateString()}
+              {t('legal.lastUpdated')}: {formatDate(doc.lastUpdated)}
             </p>
           </div>
 
-          <GlassCard variant="strong" className="p-8 sm:p-10">
-            <p className="text-gray-600 leading-relaxed text-pretty">
-              {t('legal.placeholder')}
-            </p>
-          </GlassCard>
+          <div className="space-y-6">
+            {doc.sections.map((section, i) => (
+              <GlassCard key={i} variant="default" className="p-6 sm:p-8">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
+                  {t(section.headingKey as never)}
+                </h2>
+                <div className="space-y-3">
+                  {section.paragraphs.map((pkey, j) => (
+                    <p key={j} className="text-gray-600 leading-relaxed text-pretty">
+                      {t(pkey as never)}
+                    </p>
+                  ))}
+                </div>
+              </GlassCard>
+            ))}
+          </div>
+
+          {/* <!-- REVIEW WITH A LEGAL ADVISOR BEFORE LAUNCH --> */}
         </Container>
       </div>
     </>
