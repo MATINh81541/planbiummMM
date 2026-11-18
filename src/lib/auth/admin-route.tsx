@@ -1,26 +1,45 @@
 /*
- * PlanBium admin route guard — temporary demo mode.
+ * PlanBium admin route guard.
  *
- * Previously checked `profiles.role === 'admin'` via Supabase. With Supabase
- * removed, the admin area is gated by a simple demo flag so the UI stays
- * reachable for development. Reintroduce a real server-side role check when
- * the custom backend is connected.
+ * IMPORTANT: Role checks in the frontend are for UX only. Real authorization
+ * must be enforced by the backend on every request.
  */
 
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth/auth-context';
+import { useToast } from '@/components/ui/Toast';
+import { useLocale } from '@/lib/i18n/locale-context';
+
+function FullScreenSpinner() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-lime-600" />
+    </div>
+  );
+}
 
 export function AdminRoute({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { status, role } = useAuth();
+  const { showToast } = useToast();
+  const { t } = useLocale();
 
-  // Demo mode: any signed-in demo user can view the admin UI.
-  // Admin data is empty/mock until the backend exists.
-  if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="animate-pulse text-gray-400">Loading...</div>
-      </div>
-    );
+  useEffect(() => {
+    if (status === 'authenticated' && role !== 'admin') {
+      showToast('error', t('auth.error.notAdmin'));
+    }
+  }, [status, role, showToast, t]);
+
+  if (status === 'loading') {
+    return <FullScreenSpinner />;
+  }
+
+  if (status === 'anonymous') {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (role !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

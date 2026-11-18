@@ -198,6 +198,24 @@ export type TranslationKey =
   | 'auth.retryAuth'
   | 'auth.backToHome'
   | 'auth.dashboardRedirect'
+  | 'auth.password'
+  | 'auth.passwordPlaceholder'
+  | 'auth.signIn'
+  | 'auth.signingIn'
+  | 'auth.signUp'
+  | 'auth.signingUp'
+  | 'auth.displayName'
+  | 'auth.displayNamePlaceholder'
+  | 'auth.showPassword'
+  | 'auth.hidePassword'
+  | 'auth.demoLogin'
+  | 'auth.loginSuccess'
+  | 'auth.signupSuccess'
+  | 'auth.error.invalidEmail'
+  | 'auth.error.passwordTooShort'
+  | 'auth.error.displayNameTooShort'
+  | 'auth.error.notAdmin'
+  | 'auth.error.backendUnavailable'
   // Dashboard
   | 'dashboard.title'
   | 'dashboard.welcome'
@@ -579,6 +597,24 @@ const en: TranslationDict = {
   'auth.retryAuth': 'Try Again',
   'auth.backToHome': 'Back to Home',
   'auth.dashboardRedirect': 'Taking you to your dashboard...',
+  'auth.password': 'Password',
+  'auth.passwordPlaceholder': 'Enter your password',
+  'auth.signIn': 'Sign In',
+  'auth.signingIn': 'Signing in...',
+  'auth.signUp': 'Sign Up',
+  'auth.signingUp': 'Creating account...',
+  'auth.displayName': 'Display name',
+  'auth.displayNamePlaceholder': 'Your name',
+  'auth.showPassword': 'Show password',
+  'auth.hidePassword': 'Hide password',
+  'auth.demoLogin': 'Continue with demo account',
+  'auth.loginSuccess': 'Signed in successfully',
+  'auth.signupSuccess': 'Account created successfully',
+  'auth.error.invalidEmail': 'Please enter a valid email address.',
+  'auth.error.passwordTooShort': 'Password must be at least 6 characters.',
+  'auth.error.displayNameTooShort': 'Display name must be at least 2 characters.',
+  'auth.error.notAdmin': 'You need admin access to view that page.',
+  'auth.error.backendUnavailable': 'Authentication is not available right now.',
   // Dashboard
   'dashboard.title': 'Dashboard',
   'dashboard.welcome': 'Welcome',
@@ -986,6 +1022,24 @@ const fa: TranslationDict = {
   'auth.retryAuth': 'تلاش مجدد',
   'auth.backToHome': 'بازگشت به خانه',
   'auth.dashboardRedirect': 'در حال انتقال به داشبورد...',
+  'auth.password': 'رمز عبور',
+  'auth.passwordPlaceholder': 'رمز عبور خود را وارد کنید',
+  'auth.signIn': 'ورود',
+  'auth.signingIn': 'در حال ورود...',
+  'auth.signUp': 'ثبت‌نام',
+  'auth.signingUp': 'در حال ایجاد حساب...',
+  'auth.displayName': 'نام نمایشی',
+  'auth.displayNamePlaceholder': 'نام شما',
+  'auth.showPassword': 'نمایش رمز عبور',
+  'auth.hidePassword': 'پنهان کردن رمز عبور',
+  'auth.demoLogin': 'ادامه با حساب نمایشی',
+  'auth.loginSuccess': 'با موفقیت وارد شدید',
+  'auth.signupSuccess': 'حساب با موفقیت ایجاد شد',
+  'auth.error.invalidEmail': 'لطفاً یک آدرس ایمیل معتبر وارد کنید.',
+  'auth.error.passwordTooShort': 'رمز عبور باید حداقل ۶ نویسه باشد.',
+  'auth.error.displayNameTooShort': 'نام نمایشی باید حداقل ۲ نویسه باشد.',
+  'auth.error.notAdmin': 'برای مشاهده آن صفحه به دسترسی مدیریت نیاز دارید.',
+  'auth.error.backendUnavailable': 'احراز هویت در حال حاضر در دسترس نیست.',
   // Dashboard
   'dashboard.title': 'داشبورد',
   'dashboard.welcome': 'خوش آمدید',
@@ -1390,7 +1444,25 @@ const ar: TranslationDict = {
   'auth.retryAuth': 'حاول مرة أخرى',
   'auth.backToHome': 'العودة للرئيسية',
   'auth.dashboardRedirect': 'جاري نقلك إلى لوحة التحكم...',
-  // Dashboard
+
+  'auth.password': "Password",
+  'auth.passwordPlaceholder': "Enter your password",
+  'auth.signIn': "Sign In",
+  'auth.signingIn': "Signing in...",
+  'auth.signUp': "Sign Up",
+  'auth.signingUp': "Creating account...",
+  'auth.displayName': "Display name",
+  'auth.displayNamePlaceholder': "Your name",
+  'auth.showPassword': "Show password",
+  'auth.hidePassword': "Hide password",
+  'auth.demoLogin': "Continue with demo account",
+  'auth.loginSuccess': "Signed in successfully",
+  'auth.signupSuccess': "Account created successfully",
+  'auth.error.invalidEmail': "Please enter a valid email address.",
+  'auth.error.passwordTooShort': "Password must be at least 6 characters.",
+  'auth.error.displayNameTooShort': "Display name must be at least 2 characters.",
+  'auth.error.notAdmin': "You need admin access to view that page.",
+  'auth.error.backendUnavailable': "Authentication is not available right now.",  // Dashboard
   'dashboard.title': 'لوحة التحكم',
   'dashboard.welcome': 'مرحباً',
   'dashboard.nav.pricing': 'الأسعار',
@@ -1795,7 +1867,25 @@ const zhHans: TranslationDict = {
   'auth.retryAuth': '重试',
   'auth.backToHome': '返回首页',
   'auth.dashboardRedirect': '正在跳转到控制台...',
-  // Dashboard
+
+  'auth.password': "Password",
+  'auth.passwordPlaceholder': "Enter your password",
+  'auth.signIn': "Sign In",
+  'auth.signingIn': "Signing in...",
+  'auth.signUp': "Sign Up",
+  'auth.signingUp': "Creating account...",
+  'auth.displayName': "Display name",
+  'auth.displayNamePlaceholder': "Your name",
+  'auth.showPassword': "Show password",
+  'auth.hidePassword': "Hide password",
+  'auth.demoLogin': "Continue with demo account",
+  'auth.loginSuccess': "Signed in successfully",
+  'auth.signupSuccess': "Account created successfully",
+  'auth.error.invalidEmail': "Please enter a valid email address.",
+  'auth.error.passwordTooShort': "Password must be at least 6 characters.",
+  'auth.error.displayNameTooShort': "Display name must be at least 2 characters.",
+  'auth.error.notAdmin': "You need admin access to view that page.",
+  'auth.error.backendUnavailable': "Authentication is not available right now.",  // Dashboard
   'dashboard.title': '控制台',
   'dashboard.welcome': '欢迎',
   'dashboard.nav.pricing': '定价',
@@ -2201,7 +2291,25 @@ const nl: TranslationDict = {
   'auth.retryAuth': 'Opnieuw proberen',
   'auth.backToHome': 'Terug naar home',
   'auth.dashboardRedirect': 'We brengen je naar je dashboard...',
-  // Dashboard
+
+  'auth.password': "Password",
+  'auth.passwordPlaceholder': "Enter your password",
+  'auth.signIn': "Sign In",
+  'auth.signingIn': "Signing in...",
+  'auth.signUp': "Sign Up",
+  'auth.signingUp': "Creating account...",
+  'auth.displayName': "Display name",
+  'auth.displayNamePlaceholder': "Your name",
+  'auth.showPassword': "Show password",
+  'auth.hidePassword': "Hide password",
+  'auth.demoLogin': "Continue with demo account",
+  'auth.loginSuccess': "Signed in successfully",
+  'auth.signupSuccess': "Account created successfully",
+  'auth.error.invalidEmail': "Please enter a valid email address.",
+  'auth.error.passwordTooShort': "Password must be at least 6 characters.",
+  'auth.error.displayNameTooShort': "Display name must be at least 2 characters.",
+  'auth.error.notAdmin': "You need admin access to view that page.",
+  'auth.error.backendUnavailable': "Authentication is not available right now.",  // Dashboard
   'dashboard.title': 'Dashboard',
   'dashboard.welcome': 'Welkom',
   'dashboard.nav.pricing': 'Prijzen',
@@ -2607,7 +2715,25 @@ const es: TranslationDict = {
   'auth.retryAuth': 'Intentar de nuevo',
   'auth.backToHome': 'Volver al inicio',
   'auth.dashboardRedirect': 'Llevándote a tu panel...',
-  // Dashboard
+
+  'auth.password': "Password",
+  'auth.passwordPlaceholder': "Enter your password",
+  'auth.signIn': "Sign In",
+  'auth.signingIn': "Signing in...",
+  'auth.signUp': "Sign Up",
+  'auth.signingUp': "Creating account...",
+  'auth.displayName': "Display name",
+  'auth.displayNamePlaceholder': "Your name",
+  'auth.showPassword': "Show password",
+  'auth.hidePassword': "Hide password",
+  'auth.demoLogin': "Continue with demo account",
+  'auth.loginSuccess': "Signed in successfully",
+  'auth.signupSuccess': "Account created successfully",
+  'auth.error.invalidEmail': "Please enter a valid email address.",
+  'auth.error.passwordTooShort': "Password must be at least 6 characters.",
+  'auth.error.displayNameTooShort': "Display name must be at least 2 characters.",
+  'auth.error.notAdmin': "You need admin access to view that page.",
+  'auth.error.backendUnavailable': "Authentication is not available right now.",  // Dashboard
   'dashboard.title': 'Panel',
   'dashboard.welcome': 'Bienvenido',
   'dashboard.nav.pricing': 'Precios',

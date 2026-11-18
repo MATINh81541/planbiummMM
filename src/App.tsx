@@ -14,7 +14,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LocaleProvider } from '@/lib/i18n/locale-context';
 import { AuthProvider } from '@/lib/auth/auth-context';
 import { DashboardThemeProvider } from '@/lib/dashboard-theme';
-import { ProtectedRoute } from '@/lib/auth/protected-route';
+import { ProtectedRoute, GuestOnlyRoute } from '@/lib/auth/protected-route';
 import { AdminRoute } from '@/lib/auth/admin-route';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -29,6 +29,8 @@ import { LegalPage } from '@/pages/LegalPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { AuthCallbackPage } from '@/pages/AuthCallbackPage';
 import { AuthErrorPage } from '@/pages/AuthErrorPage';
+import { LoginPage } from '@/pages/LoginPage';
+import { SignupPage } from '@/pages/SignupPage';
 
 const DashboardHomePage = lazy(() =>
   import('@/pages/DashboardHomePage').then((m) => ({ default: m.DashboardHomePage })),
@@ -98,9 +100,9 @@ export default function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
 
-            {/* Auth routes — temporarily disabled, redirect to dashboard */}
-            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+            {/* Auth routes */}
+            <Route path="/login" element={<GuestOnlyRoute><LoginPage /></GuestOnlyRoute>} />
+            <Route path="/signup" element={<GuestOnlyRoute><SignupPage /></GuestOnlyRoute>} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/auth/error" element={<AuthErrorPage />} />
 

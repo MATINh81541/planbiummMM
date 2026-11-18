@@ -1,15 +1,16 @@
 /*
  * PlanBium floating Liquid Glass header.
  *
- * Navigation: Home, Pricing, About, FAQ, Login/Signup.
+ * Navigation: Home, Pricing, About, FAQ.
+ * Auth-aware: shows Login/Sign up when anonymous, Dashboard + user initial when authenticated.
  * About/FAQ use smooth-scroll to homepage sections with header offset.
- * Active page is clearly indicated with elegance.
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useAuth } from '@/lib/auth/auth-context';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { LanguageSelector } from '@/components/LanguageSelector';
@@ -17,9 +18,13 @@ import { BrandLogo } from '@/components/BrandLogo';
 
 export function Header() {
   const { t } = useLocale();
+  const { status, profile } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const isAuthenticated = status === 'authenticated';
+  const userInitial = profile?.displayName?.charAt(0).toUpperCase() ?? '?';
 
   useEffect(() => {
     setMobileOpen(false);
@@ -29,8 +34,6 @@ export function Header() {
     setMobileOpen(false);
     const sectionId = hash.replace(/^#/, '');
     if (location.pathname !== '/') {
-      // Navigate home with the hash; HomePage's mount effect handles the scroll
-      // once the page is rendered (no setTimeout race).
       navigate(`/#${sectionId}`);
     } else {
       const el = document.getElementById(sectionId);
@@ -104,11 +107,29 @@ export function Header() {
             {/* Right side */}
             <div className="flex items-center gap-2">
               <LanguageSelector />
-              <div className="hidden sm:flex items-center gap-2">
-                <Link to="/dashboard">
-                  <Button variant="primary" size="sm">{t('nav.dashboard')}</Button>
-                </Link>
-              </div>
+              {isAuthenticated ? (
+                <div className="hidden sm:flex items-center gap-2">
+                  <Link to="/dashboard">
+                    <Button variant="primary" size="sm">{t('nav.dashboard')}</Button>
+                  </Link>
+                  <Link
+                    to="/dashboard/account"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-bold text-white transition-transform hover:scale-105"
+                    title={profile?.displayName ?? ''}
+                  >
+                    {userInitial}
+                  </Link>
+                </div>
+              ) : (
+                <div className="hidden sm:flex items-center gap-2">
+                  <Link to="/login">
+                    <Button variant="ghost" size="sm">{t('nav.login')}</Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button variant="primary" size="sm">{t('nav.signup')}</Button>
+                  </Link>
+                </div>
+              )}
 
               {/* Mobile menu toggle */}
               <button
@@ -150,9 +171,27 @@ export function Header() {
                 ),
               )}
               <div className="flex gap-2 pt-2">
-                <Link to="/dashboard" className="flex-1" onClick={() => setMobileOpen(false)}>
-                  <Button variant="primary" size="sm" className="w-full">{t('nav.dashboard')}</Button>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link to="/dashboard" className="flex-1" onClick={() => setMobileOpen(false)}>
+                      <Button variant="primary" size="sm" className="w-full">{t('nav.dashboard')}</Button>
+                    </Link>
+                    <Link to="/dashboard/account" onClick={() => setMobileOpen(false)}>
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-bold text-white">
+                        {userInitial}
+                      </span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="flex-1" onClick={() => setMobileOpen(false)}>
+                      <Button variant="ghost" size="sm" className="w-full">{t('nav.login')}</Button>
+                    </Link>
+                    <Link to="/signup" className="flex-1" onClick={() => setMobileOpen(false)}>
+                      <Button variant="primary" size="sm" className="w-full">{t('nav.signup')}</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           )}
