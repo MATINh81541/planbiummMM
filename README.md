@@ -19,6 +19,18 @@ npm run build
 
 Production output is written to `dist/`.
 
+## Hosting (SPA rewrite rules)
+
+This is a single-page application — every route must serve `index.html` so
+that deep links and page refreshes work. Rewrite files are included for common
+hosts:
+
+- **Netlify** — `public/_redirects` contains `/* /index.html 200`.
+- **Vercel** — `vercel.json` rewrites all routes to `/index.html`.
+- **nginx** — see `docs/nginx.conf` for a `try_files $uri /index.html` example.
+
+Copy the appropriate file into your hosting configuration when deploying.
+
 ## Other scripts
 
 ```bash

@@ -57,6 +57,18 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = direction;
   }, [locale, direction]);
 
+  // Lazy-load Noto Sans SC only when the zh-Hans locale is active.
+  // This avoids shipping a large CJK font to non-Chinese users.
+  useEffect(() => {
+    if (locale !== 'zh-Hans') return;
+    let cancelled = false;
+    import('@fontsource/noto-sans-sc/400.css');
+    import('@fontsource/noto-sans-sc/500.css');
+    import('@fontsource/noto-sans-sc/600.css');
+    import('@fontsource/noto-sans-sc/700.css');
+    return () => { cancelled = true; };
+  }, [locale]);
+
   const t = useCallback((key: TranslationKey) => translate(locale, key), [locale]);
 
   const formatCurrency = useCallback(

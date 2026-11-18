@@ -5,8 +5,11 @@
  * use descendant <Routes> inside their layouts, with splat parent paths
  * ("/dashboard/*", "/admin/*") so every sub-route resolves by URL and by
  * refresh. Unknown sub-routes show NotFound inside the matching layout.
+ *
+ * Dashboard and admin pages are lazy-loaded to reduce the initial bundle.
  */
 
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LocaleProvider } from '@/lib/i18n/locale-context';
 import { AuthProvider } from '@/lib/auth/auth-context';
@@ -26,18 +29,52 @@ import { LegalPage } from '@/pages/LegalPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { AuthCallbackPage } from '@/pages/AuthCallbackPage';
 import { AuthErrorPage } from '@/pages/AuthErrorPage';
-import { DashboardHomePage } from '@/pages/DashboardHomePage';
-import { DashboardPricingPage } from '@/pages/DashboardPricingPage';
-import { DashboardCartPage } from '@/pages/DashboardCartPage';
-import { DashboardPurchasesPage } from '@/pages/DashboardPurchasesPage';
-import { DashboardAccountPage } from '@/pages/DashboardAccountPage';
-import { CheckoutPage } from '@/pages/CheckoutPage';
-import { CheckoutResultPage } from '@/pages/CheckoutResultPage';
-import { AdminProductsPage } from '@/pages/admin/AdminProductsPage';
-import { AdminOrdersPage } from '@/pages/admin/AdminOrdersPage';
-import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
-import { AdminEntitlementsPage } from '@/pages/admin/AdminEntitlementsPage';
-import { AdminUsersPage } from '@/pages/admin/AdminUsersPage';
+
+const DashboardHomePage = lazy(() =>
+  import('@/pages/DashboardHomePage').then((m) => ({ default: m.DashboardHomePage })),
+);
+const DashboardPricingPage = lazy(() =>
+  import('@/pages/DashboardPricingPage').then((m) => ({ default: m.DashboardPricingPage })),
+);
+const DashboardCartPage = lazy(() =>
+  import('@/pages/DashboardCartPage').then((m) => ({ default: m.DashboardCartPage })),
+);
+const DashboardPurchasesPage = lazy(() =>
+  import('@/pages/DashboardPurchasesPage').then((m) => ({ default: m.DashboardPurchasesPage })),
+);
+const DashboardAccountPage = lazy(() =>
+  import('@/pages/DashboardAccountPage').then((m) => ({ default: m.DashboardAccountPage })),
+);
+const CheckoutPage = lazy(() =>
+  import('@/pages/CheckoutPage').then((m) => ({ default: m.CheckoutPage })),
+);
+const CheckoutResultPage = lazy(() =>
+  import('@/pages/CheckoutResultPage').then((m) => ({ default: m.CheckoutResultPage })),
+);
+
+const AdminProductsPage = lazy(() =>
+  import('@/pages/admin/AdminProductsPage').then((m) => ({ default: m.AdminProductsPage })),
+);
+const AdminOrdersPage = lazy(() =>
+  import('@/pages/admin/AdminOrdersPage').then((m) => ({ default: m.AdminOrdersPage })),
+);
+const AdminPaymentsPage = lazy(() =>
+  import('@/pages/admin/AdminPaymentsPage').then((m) => ({ default: m.AdminPaymentsPage })),
+);
+const AdminEntitlementsPage = lazy(() =>
+  import('@/pages/admin/AdminEntitlementsPage').then((m) => ({ default: m.AdminEntitlementsPage })),
+);
+const AdminUsersPage = lazy(() =>
+  import('@/pages/admin/AdminUsersPage').then((m) => ({ default: m.AdminUsersPage })),
+);
+
+function PageSpinner() {
+  return (
+    <div className="flex items-center justify-center py-24">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-lime-600" />
+    </div>
+  );
+}
 
 export default function App() {
   return (
@@ -72,16 +109,18 @@ export default function App() {
               <ProtectedRoute>
                 <DashboardThemeProvider>
                   <DashboardLayout>
-                    <Routes>
-                      <Route index element={<DashboardHomePage />} />
-                      <Route path="pricing" element={<DashboardPricingPage />} />
-                      <Route path="cart" element={<DashboardCartPage />} />
-                      <Route path="purchases" element={<DashboardPurchasesPage />} />
-                      <Route path="account" element={<DashboardAccountPage />} />
-                      <Route path="checkout" element={<CheckoutPage />} />
-                      <Route path="checkout/result" element={<CheckoutResultPage />} />
-                      <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
+                    <Suspense fallback={<PageSpinner />}>
+                      <Routes>
+                        <Route index element={<DashboardHomePage />} />
+                        <Route path="pricing" element={<DashboardPricingPage />} />
+                        <Route path="cart" element={<DashboardCartPage />} />
+                        <Route path="purchases" element={<DashboardPurchasesPage />} />
+                        <Route path="account" element={<DashboardAccountPage />} />
+                        <Route path="checkout" element={<CheckoutPage />} />
+                        <Route path="checkout/result" element={<CheckoutResultPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                      </Routes>
+                    </Suspense>
                   </DashboardLayout>
                 </DashboardThemeProvider>
               </ProtectedRoute>
@@ -91,15 +130,17 @@ export default function App() {
             <Route path="/admin/*" element={
               <AdminRoute>
                 <AdminLayout>
-                  <Routes>
-                    <Route index element={<AdminProductsPage />} />
-                    <Route path="products" element={<AdminProductsPage />} />
-                    <Route path="orders" element={<AdminOrdersPage />} />
-                    <Route path="payments" element={<AdminPaymentsPage />} />
-                    <Route path="entitlements" element={<AdminEntitlementsPage />} />
-                    <Route path="users" element={<AdminUsersPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                  </Routes>
+                  <Suspense fallback={<PageSpinner />}>
+                    <Routes>
+                      <Route index element={<AdminProductsPage />} />
+                      <Route path="products" element={<AdminProductsPage />} />
+                      <Route path="orders" element={<AdminOrdersPage />} />
+                      <Route path="payments" element={<AdminPaymentsPage />} />
+                      <Route path="entitlements" element={<AdminEntitlementsPage />} />
+                      <Route path="users" element={<AdminUsersPage />} />
+                      <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                  </Suspense>
                 </AdminLayout>
               </AdminRoute>
             } />

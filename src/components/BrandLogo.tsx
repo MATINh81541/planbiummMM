@@ -16,6 +16,9 @@ export function BrandLogo({ size = 'default', className = '' }: BrandLogoProps) 
     <img
       src={LOGO_SRC}
       alt="PlanBium"
+      width={40}
+      height={40}
+      loading="lazy"
       className={`shrink-0 rounded-xl object-contain ${sizeClasses[size]} ${className}`}
     />
   );

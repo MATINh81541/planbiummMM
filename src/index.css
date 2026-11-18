@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter', 'Vazirmatn', 'Noto Sans Arabic', 'Noto Sans SC', system-ui, sans-serif;
+    --font-sans: 'Inter', 'Vazirmatn', 'Noto Sans Arabic', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   }
 
   html {
@@ -31,7 +31,7 @@
   }
 
   [lang='zh-Hans'] {
-    font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+    font-family: 'Noto Sans SC', 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   }
 }
 

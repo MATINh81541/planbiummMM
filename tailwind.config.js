@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'Vazirmatn', 'Noto Sans Arabic', 'Noto Sans SC', 'system-ui', 'sans-serif'],
-        display: ['Inter', 'Vazirmatn', 'Noto Sans Arabic', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Vazirmatn', 'Noto Sans Arabic', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Inter', 'Vazirmatn', 'Noto Sans Arabic', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       colors: {
         lime: {
