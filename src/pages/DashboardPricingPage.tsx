@@ -1,22 +1,19 @@
 /*
  * PlanBium dashboard pricing page.
  *
- * Uses the same backend catalog/pricing source as public pricing.
+ * Uses the shared PricingGrid component.
  * Continue adds to the real server-backed cart (user is already authenticated).
- * Duplicate purchase protection: checks entitlements.
+ * Owned products show a "Purchased" badge and link to purchases.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle, RefreshCw } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useCatalog } from '@/hooks/useCatalog';
 import { cartService } from '@/lib/services/cart-service';
 import { entitlementService } from '@/lib/services/entitlement-service';
 import { Container } from '@/components/ui/Container';
-import { Button } from '@/components/ui/Button';
-import { PricingCard } from '@/components/PricingCard';
-import { SkeletonCard } from '@/components/ui/Skeleton';
+import { PricingGrid } from '@/components/pricing/PricingGrid';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useToast } from '@/components/ui/Toast';
 
@@ -25,15 +22,25 @@ export function DashboardPricingPage() {
   const { products, loading, error, refetch } = useCatalog();
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
+  const [ownedProductIds, setOwnedProductIds] = useState<string[]>([]);
   useDocumentTitle('page.title.dashboardPricing');
   const { showToast } = useToast();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const entitlements = await entitlementService.listEntitlements();
+        setOwnedProductIds(entitlements.map((e) => e.product_id));
+      } catch {
+        // Non-fatal — grid still renders without owned badges
+      }
+    })();
+  }, []);
 
   const handleSelect = useCallback(async (productId: string) => {
     setSelectingId(productId);
     try {
-      // Check if already owned
-      const owned = await entitlementService.hasEntitlement(productId);
-      if (owned) {
+      if (ownedProductIds.includes(productId)) {
         navigate('/dashboard/purchases');
         return;
       }
@@ -45,8 +52,7 @@ export function DashboardPricingPage() {
     } finally {
       setSelectingId(null);
     }
-  }, [navigate]);
-
+  }, [navigate, ownedProductIds, showToast, t]);
 
   return (
     <Container size="xl">
@@ -55,42 +61,15 @@ export function DashboardPricingPage() {
         <p className="mt-1 text-gray-500">{t('pricing.subtitle')}</p>
       </div>
 
-      {loading && (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </div>
-      )}
-
-      {!loading && error && (
-        <div className="flex flex-col items-center gap-4 py-16">
-          <div className="glass-surface flex items-center gap-3 rounded-glass px-6 py-4 text-gray-700">
-            <AlertCircle size={20} className="text-red-500" aria-hidden="true" />
-            <span>{t('pricing.error')}</span>
-          </div>
-          <Button variant="glass" size="md" onClick={refetch}>
-            <RefreshCw size={18} aria-hidden="true" />
-            {t('pricing.retry')}
-          </Button>
-        </div>
-      )}
-
-      {!loading && !error && products.length > 0 && (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {products.map((item, i) => (
-            <PricingCard
-              key={item.product.id}
-              product={item.product}
-              translation={item.translation}
-              price={item.displayPrice}
-              isPopular={item.product.metadata?.is_popular === true}
-              onSelect={handleSelect}
-              isLoading={selectingId === item.product.id}
-            />
-          ))}
-        </div>
-      )}
+      <PricingGrid
+        products={products}
+        loading={loading}
+        error={error}
+        onRetry={refetch}
+        onSelect={handleSelect}
+        ownedProductIds={ownedProductIds}
+        selectingId={selectingId}
+      />
     </Container>
   );
 }

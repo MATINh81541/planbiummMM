@@ -13,6 +13,7 @@ import { DEMO_CREATED_AT } from './shared';
 
 export interface DemoProduct extends Product {
   is_popular: boolean;
+  billing: 'one_time' | 'monthly';
 }
 
 interface DemoCatalogEntry {
@@ -27,13 +28,15 @@ function makeProduct(
   id: string,
   slug: string,
   isPopular: boolean,
+  billing: 'one_time' | 'monthly' = 'one_time',
 ): DemoProduct {
   return {
     id,
     slug,
     status: 'active',
-    metadata: { is_popular: isPopular },
+    metadata: { is_popular: isPopular, billing },
     is_popular: isPopular,
+    billing,
     created_at: FIXED_DATE,
     updated_at: FIXED_DATE,
   };

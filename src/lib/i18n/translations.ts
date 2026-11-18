@@ -64,6 +64,9 @@ export type TranslationKey =
   | 'pricing.noProducts'
   | 'pricing.features'
   | 'pricing.popular'
+  | 'pricing.monthly'
+  | 'pricing.viewInPurchases'
+  | 'pricing.purchasedBadge'
   // Footer
   | 'footer.tagline'
   | 'footer.rights'
@@ -359,6 +362,9 @@ const en: TranslationDict = {
   'pricing.noProducts': 'No planners are currently available.',
   'pricing.features': 'Included features',
   'pricing.popular': 'Most Popular',
+  'pricing.monthly': '/mo',
+  'pricing.viewInPurchases': 'View in My Purchases',
+  'pricing.purchasedBadge': 'Purchased',
   'footer.tagline': 'Beautiful digital planners for a more intentional life.',
   'footer.rights': 'All rights reserved.',
   'footer.legal.terms': 'Terms',
@@ -675,6 +681,9 @@ const fa: TranslationDict = {
   'pricing.noProducts': 'هیچ برنامه‌ریزی در حال حاضر موجود نیست.',
   'pricing.features': 'ویژگی‌های شامل',
   'pricing.popular': 'محبوب‌ترین',
+  'pricing.monthly': '/ماه',
+  'pricing.viewInPurchases': 'مشاهده در خریدهای من',
+  'pricing.purchasedBadge': 'خریده شده',
   'footer.tagline': 'برنامه‌ریزهای دیجیتال زیبا برای زندگی با هدف‌تر.',
   'footer.rights': 'تمام حقوق محفوظ است.',
   'footer.legal.terms': 'شرایط',

@@ -1,21 +1,19 @@
 /*
- * PlanBium pricing page.
+ * PlanBium public pricing page.
  * Blueberry-dominant fluid background.
- * Exactly 5 pricing/product cards consuming backend catalog data.
+ * Uses the shared PricingGrid component.
  * Continue preserves selected product through auth flow.
  */
 
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle, RefreshCw } from 'lucide-react';
 import { FluidBackground } from '@/components/FluidBackground';
 import { Container } from '@/components/ui/Container';
-import { Button } from '@/components/ui/Button';
-import { PricingCard } from '@/components/PricingCard';
-import { SkeletonCard } from '@/components/ui/Skeleton';
+import { PricingGrid } from '@/components/pricing/PricingGrid';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useCatalog } from '@/hooks/useCatalog';
 import { usePendingPurchase } from '@/hooks/usePendingPurchase';
+import { useAuth } from '@/lib/auth/auth-context';
 import { cartService } from '@/lib/services/cart-service';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useToast } from '@/components/ui/Toast';
@@ -24,6 +22,7 @@ export function PricingPage() {
   const { t } = useLocale();
   const { products, loading, error, refetch } = useCatalog();
   const { setPending } = usePendingPurchase();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
   useDocumentTitle('page.title.pricing');
@@ -33,25 +32,23 @@ export function PricingPage() {
     async (productId: string) => {
       setSelectingId(productId);
       try {
-        // Demo mode: no real session check. Try to add to the cart; the cart
-        // service currently throws backend_unavailable, which we treat as a
-        // signal to preserve the selection and send the user to the cart page
-        // (which renders an empty state).
-        try {
-          await cartService.addItem(productId);
-        } catch {
-          showToast('error', t('toast.cartAddFailed'));
+        if (user) {
+          try {
+            await cartService.addItem(productId);
+          } catch {
+            showToast('error', t('toast.cartAddFailed'));
+          }
+          navigate('/dashboard/cart');
+        } else {
+          setPending(productId);
+          navigate('/login');
         }
-        setPending(productId);
-        navigate('/dashboard/cart');
       } finally {
         setSelectingId(null);
       }
     },
-    [navigate, setPending],
+    [navigate, setPending, user, showToast, t],
   );
-
-  // Determine which product is "popular" — the middle one (index 2)
 
   return (
     <>
@@ -69,51 +66,15 @@ export function PricingPage() {
             </p>
           </div>
 
-          {/* Content */}
-          {loading && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))}
-            </div>
-          )}
-
-          {!loading && error && (
-            <div className="flex flex-col items-center justify-center gap-4 py-16">
-              <div className="glass-surface flex items-center gap-3 rounded-glass px-6 py-4 text-gray-700">
-                <AlertCircle size={20} className="text-red-500" aria-hidden="true" />
-                <span>{t('pricing.error')}</span>
-              </div>
-              <Button variant="glass" size="md" onClick={refetch}>
-                <RefreshCw size={18} aria-hidden="true" />
-                {t('pricing.retry')}
-              </Button>
-            </div>
-          )}
-
-          {!loading && !error && products.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="glass-surface rounded-glass px-6 py-4 text-gray-600">
-                {t('pricing.noProducts')}
-              </div>
-            </div>
-          )}
-
-          {!loading && !error && products.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {products.map((item, i) => (
-                <PricingCard
-                  key={item.product.id}
-                  product={item.product}
-                  translation={item.translation}
-                  price={item.displayPrice}
-                  isPopular={item.product.metadata?.is_popular === true}
-                  onSelect={handleSelect}
-                  isLoading={selectingId === item.product.id}
-                />
-              ))}
-            </div>
-          )}
+          <PricingGrid
+            products={products}
+            loading={loading}
+            error={error}
+            onRetry={refetch}
+            onSelect={handleSelect}
+            ownedProductIds={[]}
+            selectingId={selectingId}
+          />
         </Container>
       </div>
     </>
