@@ -4,9 +4,11 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Mail } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { Container } from '@/components/ui/Container';
 import { BrandLogo } from '@/components/BrandLogo';
+import { appConfig } from '@/lib/config/env';
 
 export function Footer() {
   const { t } = useLocale();
@@ -40,11 +42,12 @@ export function Footer() {
 
             {/* Legal */}
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-3">Legal</h4>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">{t('footer.legal.title')}</h4>
               <ul className="space-y-2">
                 <li><Link to="/legal/terms" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{t('footer.legal.terms')}</Link></li>
                 <li><Link to="/legal/privacy" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{t('footer.legal.privacy')}</Link></li>
                 <li><Link to="/legal/refunds" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{t('footer.legal.refunds')}</Link></li>
+                <li><Link to="/legal/cookies" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{t('footer.legal.cookies')}</Link></li>
               </ul>
             </div>
 
@@ -53,6 +56,18 @@ export function Footer() {
               <h4 className="text-sm font-semibold text-gray-900 mb-3">{t('nav.contact')}</h4>
               <ul className="space-y-2">
                 <li><Link to="/contact" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{t('nav.contact')}</Link></li>
+                {appConfig.contactEmail && (
+                  <li>
+                    <a
+                      href={`mailto:${appConfig.contactEmail}`}
+                      className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                      dir="ltr"
+                    >
+                      <Mail size={14} aria-hidden="true" />
+                      {appConfig.contactEmail}
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -61,9 +76,16 @@ export function Footer() {
             <p className="text-xs text-gray-400">
               &copy; {year} PlanBium. {t('footer.rights')}
             </p>
-            <p className="text-xs text-gray-400">
-              PlanBium
-            </p>
+            {appConfig.contactEmail && (
+              <a
+                href={`mailto:${appConfig.contactEmail}`}
+                className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                dir="ltr"
+              >
+                <Mail size={12} aria-hidden="true" />
+                {appConfig.contactEmail}
+              </a>
+            )}
           </div>
         </div>
       </Container>
