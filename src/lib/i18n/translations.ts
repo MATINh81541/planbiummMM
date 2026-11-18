@@ -196,6 +196,23 @@ export type TranslationKey =
   | 'account.saving'
   | 'account.saved'
   | 'account.error'
+  | 'account.memberSince'
+  | 'account.paidOrders'
+  | 'account.ownedProducts'
+  | 'account.signOut'
+  | 'account.emailReadOnly'
+  | 'account.countryPlaceholder'
+  | 'account.countryNoResults'
+  | 'account.themeLight'
+  | 'account.themeDark'
+  | 'account.themeSystem'
+  | 'account.displayNameError'
+  | 'account.dangerZone'
+  | 'account.dangerZoneDescription'
+  | 'account.deleteAccount'
+  | 'account.deleteAccountSoon'
+  | 'account.profileSection'
+  | 'account.loadingProfile'
   // Checkout
   | 'checkout.title'
   | 'checkout.billingCountry'
@@ -497,6 +514,23 @@ const en: TranslationDict = {
   'account.saving': 'Saving...',
   'account.saved': 'Changes saved!',
   'account.error': 'Could not save changes. Please try again.',
+  'account.memberSince': 'Member since',
+  'account.paidOrders': 'Paid orders',
+  'account.ownedProducts': 'Owned products',
+  'account.signOut': 'Sign out',
+  'account.emailReadOnly': 'Your email cannot be changed.',
+  'account.countryPlaceholder': 'Search country...',
+  'account.countryNoResults': 'No country found',
+  'account.themeLight': 'Light',
+  'account.themeDark': 'Dark',
+  'account.themeSystem': 'System',
+  'account.displayNameError': 'Display name must be 2–60 characters.',
+  'account.dangerZone': 'Danger zone',
+  'account.dangerZoneDescription': 'Permanently delete your account and all associated data.',
+  'account.deleteAccount': 'Delete account',
+  'account.deleteAccountSoon': 'This will be available soon.',
+  'account.profileSection': 'Profile',
+  'account.loadingProfile': 'Loading profile...',
   // Checkout
   'checkout.title': 'Checkout',
   'checkout.billingCountry': 'Billing Country',
@@ -816,6 +850,23 @@ const fa: TranslationDict = {
   'account.saving': 'در حال ذخیره...',
   'account.saved': 'تغییرات ذخیره شد!',
   'account.error': 'ذخیره تغییرات ممکن نشد. لطفاً دوباره تلاش کنید.',
+  'account.memberSince': 'عضو از',
+  'account.paidOrders': 'سفارش‌های پرداخت‌شده',
+  'account.ownedProducts': 'محصولات دارای',
+  'account.signOut': 'خروج',
+  'account.emailReadOnly': 'ایمیل شما قابل تغییر نیست.',
+  'account.countryPlaceholder': 'جستجوی کشور...',
+  'account.countryNoResults': 'کشوری یافت نشد',
+  'account.themeLight': 'روشن',
+  'account.themeDark': 'تیره',
+  'account.themeSystem': 'سیستم',
+  'account.displayNameError': 'نام نمایشی باید ۲ تا ۶۰ نویسه باشد.',
+  'account.dangerZone': 'منطقه خطر',
+  'account.dangerZoneDescription': 'حساب خود و تمام داده‌های مرتبط را برای همیشه حذف کنید.',
+  'account.deleteAccount': 'حذف حساب',
+  'account.deleteAccountSoon': 'این امکان به‌زودی فراهم خواهد شد.',
+  'account.profileSection': 'پروفایل',
+  'account.loadingProfile': 'در حال بارگذاری پروفایل...',
   // Page titles (browser tab)
   'page.title.home': 'خانه',
   'page.title.pricing': 'قیمت‌گذاری',

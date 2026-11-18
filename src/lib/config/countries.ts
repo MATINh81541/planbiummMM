@@ -16,7 +16,7 @@ export interface CountryConfig {
 
 export type PaymentRegionId = 'ir' | 'eu' | 'intl';
 
-const countryRegistry: Record<string, CountryConfig> = {
+export const countryRegistry: Record<string, CountryConfig> = {
   IR: { isoCode: 'IR', defaultLocale: 'fa', paymentRegionId: 'ir' },
   NL: { isoCode: 'NL', defaultLocale: 'nl', paymentRegionId: 'eu' },
   ES: { isoCode: 'ES', defaultLocale: 'es', paymentRegionId: 'eu' },
