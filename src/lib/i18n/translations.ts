@@ -300,6 +300,11 @@ export type TranslationKey =
   | 'errorBoundary.title'
   | 'errorBoundary.description'
   | 'errorBoundary.reload'
+  // Demo mode
+  | 'demo.badge'
+  | 'demo.payButton'
+  | 'demo.payLabel'
+  | 'demo.payProcessing'
   // Error codes
   | `error.${ErrorCode}`;
 
@@ -585,6 +590,11 @@ const en: TranslationDict = {
   'errorBoundary.title': 'Something went wrong',
   'errorBoundary.description': 'An unexpected error occurred. Please reload the page to continue.',
   'errorBoundary.reload': 'Reload',
+  // Demo mode
+  'demo.badge': 'Demo Mode',
+  'demo.payButton': 'Complete Demo Payment',
+  'demo.payLabel': 'This is a demo — no real payment will be processed.',
+  'demo.payProcessing': 'Processing demo payment...',
   // Error codes
   'error.unauthorized': 'Please sign in to continue.',
   'error.forbidden': 'You do not have access to this.',
@@ -823,6 +833,11 @@ const fa: TranslationDict = {
   'errorBoundary.title': 'خطایی رخ داد',
   'errorBoundary.description': 'خطای غیرمنتظره‌ای رخ داد. لطفاً صفحه را بازنشانی کنید.',
   'errorBoundary.reload': 'بازنشانی',
+  // Demo mode
+  'demo.badge': 'حالت نمایشی',
+  'demo.payButton': 'تکمیل پرداخت نمایشی',
+  'demo.payLabel': 'این یک نمایشی است — هیچ پرداخت واقعی انجام نمی‌شود.',
+  'demo.payProcessing': 'در حال پردازش پرداخت نمایشی...',
 };
 
 const ar: TranslationDict = {

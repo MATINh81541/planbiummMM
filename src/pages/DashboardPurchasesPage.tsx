@@ -60,10 +60,8 @@ export function DashboardPurchasesPage() {
     setDownloadingId(entitlementId);
     setDownloadError(null);
     try {
-      // TODO(backend): resolve the active asset id for this product once the
-      // custom backend is wired up, then mint a short-lived download URL.
-      // The Supabase assets query + download edge function have been removed.
-      await requestDownloadUrl('');
+      const result = await requestDownloadUrl(entitlementId);
+      window.open(result.url, '_blank');
     } catch (err) {
       setDownloadError(err instanceof Error ? err.message : 'Download failed');
       showToast('error', t('toast.downloadFailed'));

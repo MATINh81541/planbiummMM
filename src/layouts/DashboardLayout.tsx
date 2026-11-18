@@ -20,6 +20,7 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 import { BrandLogo } from '@/components/BrandLogo';
 import { profileService } from '@/lib/services/profile-service';
 import { useToast } from '@/components/ui/Toast';
+import { appConfig } from '@/lib/config/env';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -133,6 +134,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <LogOut size={18} className="rtl:rotate-180" aria-hidden="true" />
                 {t('dashboard.nav.logout')}
               </button>
+              {appConfig.isDemo && (
+                <div className="mt-2 flex justify-center">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100/60 px-2.5 py-1 text-[10px] font-semibold text-amber-700">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                    {t('demo.badge')}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </aside>

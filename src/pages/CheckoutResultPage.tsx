@@ -9,9 +9,11 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { CheckCircle, XCircle, Clock, Loader2, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Loader2, RefreshCw, CreditCard } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { paymentService } from '@/lib/services/payment-service';
+import { appConfig } from '@/lib/config/env';
+import { demoPayment } from '@/lib/services/demo/payment';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -34,6 +36,7 @@ export function CheckoutResultPage() {
   const [loading, setLoading] = useState(true);
   const [pollCount, setPollCount] = useState(0);
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [demoPaying, setDemoPaying] = useState(false);
 
   const poll = useCallback(async () => {
     if (!orderId) return;
@@ -84,6 +87,7 @@ export function CheckoutResultPage() {
   const isFailed = paymentStatus === 'failed';
   const isCancelled = paymentStatus === 'canceled';
   const isExpired = orderStatus === 'expired';
+  const showDemoPay = appConfig.isDemo && isProcessing;
 
   return (
     <Container size="sm">
@@ -95,6 +99,41 @@ export function CheckoutResultPage() {
               <Loader2 size={48} className="mx-auto animate-spin text-gray-500 mb-4" aria-hidden="true" />
               <h1 className="text-xl font-bold text-gray-900 mb-2">{t('checkoutResult.processing')}</h1>
               <p className="text-gray-500">{t('checkoutResult.processingDescription')}</p>
+
+              {showDemoPay && (
+                <div className="mt-6 border-t border-gray-200/40 pt-6">
+                  <p className="text-xs text-gray-400 mb-3">{t('demo.payLabel')}</p>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    disabled={demoPaying}
+                    onClick={async () => {
+                      setDemoPaying(true);
+                      try {
+                        const result = await demoPayment.completePayment(orderId, 'zarinpal-card');
+                        setOrderStatus(result.orderStatus);
+                        setPaymentStatus(result.paymentStatus);
+                      } catch {
+                        showToast('error', t('toast.paymentFailed'));
+                      } finally {
+                        setDemoPaying(false);
+                      }
+                    }}
+                  >
+                    {demoPaying ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                        {t('demo.payProcessing')}
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard size={18} aria-hidden="true" />
+                        {t('demo.payButton')}
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </>
           )}
 

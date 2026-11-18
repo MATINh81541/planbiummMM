@@ -47,7 +47,6 @@ export function DashboardPricingPage() {
     }
   }, [navigate]);
 
-  const popularIndex = 2;
 
   return (
     <Container size="xl">
@@ -85,7 +84,7 @@ export function DashboardPricingPage() {
               product={item.product}
               translation={item.translation}
               price={item.displayPrice}
-              isPopular={i === popularIndex}
+              isPopular={item.product.metadata?.is_popular === true}
               onSelect={handleSelect}
               isLoading={selectingId === item.product.id}
             />

@@ -1,27 +1,24 @@
 /*
- * PlanBium checkout service — temporary demo mode.
+ * PlanBium checkout service.
  *
- * Supabase and the checkout edge function have been removed. All checkout
- * operations throw a clear "backend_unavailable" error so the UI surfaces a
- * real failure instead of faking a checkout session. Reimplement against the
- * custom backend when ready.
+ * When VITE_DEMO_MODE is "true", delegates to the demo checkout adapter.
+ * When "false", keeps the existing throw-on-use behavior.
  */
 
 import type { CheckoutResponse } from '@/lib/types';
+import { appConfig } from '@/lib/config/env';
+import { demoCheckout } from './demo/checkout';
 
-export const checkoutService = {
-  /** Create a new checkout session. Unavailable in demo mode. */
+const emptyService = {
   async createCheckout(): Promise<CheckoutResponse> {
     throw new Error('backend_unavailable');
   },
-
-  /** Confirm billing country for an existing checkout session. Unavailable in demo mode. */
   async confirmCountry(_sessionId: string, _billingCountry: string): Promise<CheckoutResponse> {
     throw new Error('backend_unavailable');
   },
-
-  /** Get the current state of a checkout session. Unavailable in demo mode. */
   async getCheckout(_sessionId: string): Promise<CheckoutResponse> {
     throw new Error('backend_unavailable');
   },
 };
+
+export const checkoutService = appConfig.isDemo ? demoCheckout : emptyService;

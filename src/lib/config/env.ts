@@ -12,6 +12,7 @@
 export const clientEnv = {
   appUrl: (import.meta.env.VITE_APP_URL as string) || 'http://localhost:5173',
   environment: (import.meta.env.VITE_APP_ENV as string) || 'development',
+  demoMode: ((import.meta.env.VITE_DEMO_MODE as string) ?? 'true') === 'true',
 } as const;
 
 /** Application configuration derived from environment. */
@@ -20,6 +21,7 @@ export const appConfig = {
   url: clientEnv.appUrl,
   environment: clientEnv.environment,
   isProduction: clientEnv.environment === 'production',
+  isDemo: clientEnv.demoMode,
   defaultLocale: 'en' as const,
   defaultCurrency: 'USD' as const,
   checkoutSessionTtlMinutes: 30,

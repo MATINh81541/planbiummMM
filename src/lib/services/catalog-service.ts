@@ -1,52 +1,68 @@
 /*
- * PlanBium catalog service — temporary demo mode.
+ * PlanBium catalog service.
  *
- * Supabase has been removed. The catalog service now returns an empty active
- * catalog and null lookups so the pricing UI renders its (existing) empty
- * state without a backend. The interface is preserved so a custom backend can
- * be plugged in later without touching consumers.
+ * When VITE_DEMO_MODE is "true", delegates to the demo catalog adapter
+ * (5 realistic planner products with IRR pricing). When "false", keeps
+ * the existing empty-catalog behavior for a real backend to replace.
  */
 
 import type { Product, Price, ProductTranslation } from '@/lib/types';
 import type { LocaleCode } from '@/lib/config/locales';
 import { fallbackLocale } from '@/lib/config/locales';
+import { appConfig } from '@/lib/config/env';
+import { demoCatalog } from './demo/catalog';
 
 export interface ProductWithContent extends Product {
   translations: ProductTranslation[];
   prices: Price[];
 }
 
-export const catalogService = {
-  /** List all active products. Empty in demo mode. */
+const emptyService = {
   async listProducts(): Promise<Product[]> {
     return [];
   },
-
-  /** Get a single active product by slug. None in demo mode. */
   async getProductBySlug(_slug: string): Promise<Product | null> {
     return null;
   },
-
-  /** Get translations for a product. Empty in demo mode. */
   async getTranslations(_productId: string, _locale: LocaleCode): Promise<ProductTranslation[]> {
     return [];
   },
-
-  /** Get the best translation for a product. None in demo mode. */
   async getBestTranslation(_productId: string, _locale: LocaleCode): Promise<ProductTranslation | null> {
     return null;
   },
-
-  /** Get active prices for a product. Empty in demo mode. */
   async getPrices(_productId: string): Promise<Price[]> {
     return [];
   },
-
-  /** Get a product with its translations and prices. None in demo mode. */
   async getProductWithContent(_slug: string, _locale: LocaleCode): Promise<ProductWithContent | null> {
     return null;
   },
 };
 
-// Keep the fallback import referenced for future implementation parity.
+const demoService = {
+  async listProducts(): Promise<Product[]> {
+    return demoCatalog.listProducts();
+  },
+  async getProductBySlug(slug: string): Promise<Product | null> {
+    return demoCatalog.getProductBySlug(slug);
+  },
+  async getTranslations(productId: string, locale: LocaleCode): Promise<ProductTranslation[]> {
+    return demoCatalog.getTranslations(productId, locale);
+  },
+  async getBestTranslation(productId: string, locale: LocaleCode): Promise<ProductTranslation | null> {
+    return demoCatalog.getBestTranslation(productId, locale);
+  },
+  async getPrices(productId: string): Promise<Price[]> {
+    return demoCatalog.getPrices(productId);
+  },
+  async getProductWithContent(slug: string, locale: LocaleCode): Promise<ProductWithContent | null> {
+    const product = demoCatalog.getProductBySlug(slug);
+    if (!product) return null;
+    const translations = demoCatalog.getTranslations(product.id, locale);
+    const prices = demoCatalog.getPrices(product.id);
+    return { ...product, translations, prices };
+  },
+};
+
+export const catalogService = appConfig.isDemo ? demoService : emptyService;
+
 void fallbackLocale;

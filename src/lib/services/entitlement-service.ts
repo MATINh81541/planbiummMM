@@ -1,47 +1,47 @@
 /*
- * PlanBium entitlement & download service — temporary demo mode.
+ * PlanBium entitlement & download service.
  *
- * Supabase has been removed. Entitlements/orders return empty lists and
- * download URL requests throw a clear "backend unavailable" error. No fake
- * entitlements or downloads are produced. Reimplement against the custom
- * backend when ready.
+ * When VITE_DEMO_MODE is "true", delegates to the demo adapter
+ * (localStorage-backed entitlements, generated download URLs).
+ * When "false", keeps the existing empty/throw behavior.
  */
 
 import type { Entitlement, Order, OrderItem, Payment } from '@/lib/types';
+import { appConfig } from '@/lib/config/env';
+import { demoEntitlements, generateDownloadUrl } from './demo/entitlements';
+import { demoOrders } from './demo/orders';
 
-export const entitlementService = {
-  /** List the user's active entitlements. Empty in demo mode. */
+const emptyEntitlementService = {
   async listEntitlements(): Promise<Entitlement[]> {
     return [];
   },
-
-  /** Check if the user has an active entitlement for a product. Never in demo mode. */
   async hasEntitlement(_productId: string): Promise<boolean> {
     return false;
   },
 };
 
-export const orderService = {
-  /** List the user's orders. Empty in demo mode. */
+const emptyOrderService = {
   async listOrders(): Promise<Order[]> {
     return [];
   },
-
-  /** Get a specific order with its items. None in demo mode. */
   async getOrder(_orderId: string): Promise<{ order: Order | null; items: OrderItem[] }> {
     return { order: null, items: [] };
   },
-
-  /** Get payments for an order. Empty in demo mode. */
   async getPayments(_orderId: string): Promise<Payment[]> {
     return [];
   },
 };
 
-/**
- * Request a short-lived download URL. Unavailable in demo mode — the backend
- * that verifies entitlement and mints signed URLs has been removed.
- */
-export async function requestDownloadUrl(_assetId: string): Promise<{ url: string; expiresAt: string }> {
+async function emptyRequestDownloadUrl(_assetId: string): Promise<{ url: string; expiresAt: string }> {
   throw new Error('backend_unavailable');
+}
+
+export const entitlementService = appConfig.isDemo ? demoEntitlements : emptyEntitlementService;
+export const orderService = appConfig.isDemo ? demoOrders : emptyOrderService;
+
+export async function requestDownloadUrl(entitlementId: string): Promise<{ url: string; expiresAt: string }> {
+  if (appConfig.isDemo) {
+    return generateDownloadUrl(entitlementId);
+  }
+  return emptyRequestDownloadUrl(entitlementId);
 }

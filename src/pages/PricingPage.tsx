@@ -52,7 +52,6 @@ export function PricingPage() {
   );
 
   // Determine which product is "popular" — the middle one (index 2)
-  const popularIndex = 2;
 
   return (
     <>
@@ -108,7 +107,7 @@ export function PricingPage() {
                   product={item.product}
                   translation={item.translation}
                   price={item.displayPrice}
-                  isPopular={i === popularIndex}
+                  isPopular={item.product.metadata?.is_popular === true}
                   onSelect={handleSelect}
                   isLoading={selectingId === item.product.id}
                 />

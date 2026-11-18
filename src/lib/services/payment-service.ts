@@ -1,11 +1,12 @@
 /*
- * PlanBium payment service — temporary demo mode.
+ * PlanBium payment service.
  *
- * Supabase and the payment edge function have been removed. Payment
- * initiation/verification throw a clear "backend_unavailable" error so no
- * fake payments or orders are created. Reimplement against the custom
- * backend when ready.
+ * When VITE_DEMO_MODE is "true", delegates to the demo payment adapter.
+ * When "false", keeps the existing throw-on-use behavior.
  */
+
+import { appConfig } from '@/lib/config/env';
+import { demoPayment } from './demo/payment';
 
 export interface PaymentInitResponse {
   orderId: string;
@@ -15,14 +16,13 @@ export interface PaymentInitResponse {
   status: string;
 }
 
-export const paymentService = {
-  /** Initiate a payment for a checkout session. Unavailable in demo mode. */
+const emptyService = {
   async initiatePayment(_sessionId: string, _methodId: string): Promise<PaymentInitResponse> {
     throw new Error('backend_unavailable');
   },
-
-  /** Verify payment after browser return. Unavailable in demo mode. */
   async verifyPayment(_orderId: string): Promise<{ orderStatus: string; paymentStatus: string }> {
     throw new Error('backend_unavailable');
   },
 };
+
+export const paymentService = appConfig.isDemo ? demoPayment : emptyService;
