@@ -21,7 +21,7 @@ const emptyEntitlementService = {
 };
 
 const emptyOrderService = {
-  async listOrders(): Promise<Order[]> {
+  async listOrders(): Promise<Array<{ order: Order; items: OrderItem[] }>> {
     return [];
   },
   async getOrder(_orderId: string): Promise<{ order: Order | null; items: OrderItem[] }> {

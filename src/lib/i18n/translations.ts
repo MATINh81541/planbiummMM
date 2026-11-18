@@ -178,6 +178,14 @@ export type TranslationKey =
   | 'purchases.status.refunded'
   | 'purchases.status.cancelled'
   | 'purchases.status.expired'
+  | 'purchases.myProducts'
+  | 'purchases.orderHistory'
+  | 'purchases.continuePayment'
+  | 'purchases.viewDetails'
+  | 'purchases.productCount'
+  | 'purchases.noProducts'
+  | 'purchases.noProductsDescription'
+  | 'purchases.retry'
   // Account
   | 'account.title'
   | 'account.displayName'
@@ -471,6 +479,14 @@ const en: TranslationDict = {
   'purchases.status.refunded': 'Refunded',
   'purchases.status.cancelled': 'Cancelled',
   'purchases.status.expired': 'Expired',
+  'purchases.myProducts': 'My Products',
+  'purchases.orderHistory': 'Order History',
+  'purchases.continuePayment': 'Continue Payment',
+  'purchases.viewDetails': 'View Details',
+  'purchases.productCount': '{count} products',
+  'purchases.noProducts': 'No products yet',
+  'purchases.noProductsDescription': 'Your purchased planners will appear here.',
+  'purchases.retry': 'Retry',
   // Account
   'account.title': 'Account Settings',
   'account.displayName': 'Display Name',
@@ -1004,6 +1020,14 @@ const ar: TranslationDict = {
   'purchases.status.refunded': 'مسترد',
   'purchases.status.cancelled': 'ملغى',
   'purchases.status.expired': 'منتهي الصلاحية',
+  'purchases.myProducts': 'محصولات من',
+  'purchases.orderHistory': 'تاریخچه سفارش‌ها',
+  'purchases.continuePayment': 'ادامه پرداخت',
+  'purchases.viewDetails': 'مشاهده جزئیات',
+  'purchases.productCount': '{count} محصول',
+  'purchases.noProducts': 'هنوز محصولی وجود ندارد',
+  'purchases.noProductsDescription': 'برنامه‌ریزهای خریداری‌شده اینجا نمایش داده می‌شوند.',
+  'purchases.retry': 'تلاش مجدد',
   // Account
   'account.title': 'إعدادات الحساب',
   'account.displayName': 'اسم العرض',

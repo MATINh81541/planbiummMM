@@ -20,6 +20,7 @@ interface LocaleContextValue {
   setLocale: (code: LocaleCode) => void;
   t: (key: TranslationKey) => string;
   formatCurrency: (amountMinor: number, currency: string) => string;
+  formatDate: (date: string | Date) => string;
 }
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -76,9 +77,26 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     [config.intlLocale],
   );
 
+  const formatDate = useCallback(
+    (date: string | Date) => {
+      try {
+        const d = typeof date === 'string' ? new Date(date) : date;
+        const calendarLocale = config.intlLocale === 'fa-IR' ? 'fa-IR-u-ca-persian' : config.intlLocale;
+        return new Intl.DateTimeFormat(calendarLocale, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }).format(d);
+      } catch {
+        return typeof date === 'string' ? date : date.toISOString();
+      }
+    },
+    [config.intlLocale],
+  );
+
   const value = useMemo<LocaleContextValue>(
-    () => ({ locale, config, direction, setLocale, t, formatCurrency }),
-    [locale, config, direction, setLocale, t, formatCurrency],
+    () => ({ locale, config, direction, setLocale, t, formatCurrency, formatDate }),
+    [locale, config, direction, setLocale, t, formatCurrency, formatDate],
   );
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;

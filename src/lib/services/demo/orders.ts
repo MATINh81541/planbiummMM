@@ -38,9 +38,14 @@ function savePayments(payments: Payment[]): void {
 }
 
 export const demoOrders = {
-  async listOrders(): Promise<Order[]> {
+  async listOrders(): Promise<Array<{ order: Order; items: OrderItem[] }>> {
     const store = loadStore();
-    return [...store.orders].sort((a, b) => b.created_at.localeCompare(a.created_at));
+    return [...store.orders]
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .map((order) => ({
+        order,
+        items: store.itemsByOrder[order.id] ?? [],
+      }));
   },
 
   async getOrder(orderId: string): Promise<{ order: Order | null; items: OrderItem[] }> {
