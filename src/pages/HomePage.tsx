@@ -16,15 +16,33 @@ export function HomePage() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.hash) {
-      const el = document.querySelector(location.hash);
+    if (!location.hash) return;
+    const sectionId = location.hash.replace(/^#/, '');
+    if (!sectionId) return;
+
+    let cancelled = false;
+    let attempts = 0;
+
+    const tryScroll = () => {
+      if (cancelled) return;
+      const el = document.getElementById(sectionId);
       if (el) {
-        // Small delay to ensure layout is ready
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
       }
-    }
+      // Element not rendered yet — retry briefly for late mounts.
+      attempts += 1;
+      if (attempts < 10) {
+        setTimeout(tryScroll, 50);
+      }
+    };
+
+    // Small initial delay to ensure layout is ready on first load.
+    const timer = setTimeout(tryScroll, 100);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [location.hash]);
 
   return (

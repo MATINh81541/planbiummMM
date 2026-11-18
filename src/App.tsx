@@ -1,10 +1,10 @@
 /*
  * PlanBium application root.
  *
- * Supabase auth has been temporarily removed while we prepare a custom backend.
- * The public marketing site still renders at /home, /pricing, etc., but the
- * default landing route (/) redirects to /dashboard so the app opens straight
- * to the dashboard in demo mode. Login/signup routes redirect to /dashboard.
+ * Public marketing site renders at "/" (HomePage). Dashboard and admin areas
+ * use descendant <Routes> inside their layouts, with splat parent paths
+ * ("/dashboard/*", "/admin/*") so every sub-route resolves by URL and by
+ * refresh. Unknown sub-routes show NotFound inside the matching layout.
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { AuthProvider } from '@/lib/auth/auth-context';
 import { DashboardThemeProvider } from '@/lib/dashboard-theme';
 import { ProtectedRoute } from '@/lib/auth/protected-route';
 import { AdminRoute } from '@/lib/auth/admin-route';
+import { ScrollToTop } from '@/components/ScrollToTop';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { AdminLayout } from '@/layouts/AdminLayout';
@@ -21,7 +22,6 @@ import { PricingPage } from '@/pages/PricingPage';
 import { ContactPage } from '@/pages/ContactPage';
 import { LegalPage } from '@/pages/LegalPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { AuthPage } from '@/pages/AuthPage';
 import { AuthCallbackPage } from '@/pages/AuthCallbackPage';
 import { AuthErrorPage } from '@/pages/AuthErrorPage';
 import { DashboardHomePage } from '@/pages/DashboardHomePage';
@@ -42,13 +42,12 @@ export default function App() {
     <LocaleProvider>
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
-            {/* Root opens the dashboard directly (demo mode) */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
             {/* Public marketing routes */}
             <Route element={<PublicLayout />}>
-              <Route path="/home" element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<Navigate to="/" replace />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/legal/terms" element={<LegalPage type="terms" />} />
@@ -64,7 +63,7 @@ export default function App() {
             <Route path="/auth/error" element={<AuthErrorPage />} />
 
             {/* Dashboard routes (protected) */}
-            <Route path="/dashboard" element={
+            <Route path="/dashboard/*" element={
               <ProtectedRoute>
                 <DashboardThemeProvider>
                   <DashboardLayout>
@@ -76,6 +75,7 @@ export default function App() {
                       <Route path="account" element={<DashboardAccountPage />} />
                       <Route path="checkout" element={<CheckoutPage />} />
                       <Route path="checkout/result" element={<CheckoutResultPage />} />
+                      <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </DashboardLayout>
                 </DashboardThemeProvider>
@@ -83,7 +83,7 @@ export default function App() {
             } />
 
             {/* Admin routes (protected + admin role) */}
-            <Route path="/admin" element={
+            <Route path="/admin/*" element={
               <AdminRoute>
                 <AdminLayout>
                   <Routes>
@@ -93,6 +93,7 @@ export default function App() {
                     <Route path="payments" element={<AdminPaymentsPage />} />
                     <Route path="entitlements" element={<AdminEntitlementsPage />} />
                     <Route path="users" element={<AdminUsersPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </AdminLayout>
               </AdminRoute>

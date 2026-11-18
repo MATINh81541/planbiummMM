@@ -27,16 +27,15 @@ export function Header() {
 
   const scrollToSection = useCallback((hash: string) => {
     setMobileOpen(false);
+    const sectionId = hash.replace(/^#/, '');
     if (location.pathname !== '/') {
-      navigate('/');
-      // Wait for homepage to mount before scrolling
-      setTimeout(() => {
-        const el = document.querySelector(hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
+      // Navigate home with the hash; HomePage's mount effect handles the scroll
+      // once the page is rendered (no setTimeout race).
+      navigate(`/#${sectionId}`);
     } else {
-      const el = document.querySelector(hash);
+      const el = document.getElementById(sectionId);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else navigate(`/#${sectionId}`);
     }
   }, [location.pathname, navigate]);
 
