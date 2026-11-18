@@ -73,6 +73,8 @@ export type TranslationKey =
   | 'footer.legal.terms'
   | 'footer.legal.privacy'
   | 'footer.legal.refunds'
+  | 'footer.legal.cookies'
+  | 'footer.legal.title'
   | 'footer.nav.pricing'
   | 'footer.nav.about'
   | 'footer.nav.contact'
@@ -84,8 +86,65 @@ export type TranslationKey =
   | 'legal.terms.title'
   | 'legal.privacy.title'
   | 'legal.refunds.title'
+  | 'legal.cookies.title'
   | 'legal.lastUpdated'
   | 'legal.placeholder'
+  // Legal — Terms of Service sections
+  | 'legal.terms.s1.title'
+  | 'legal.terms.s1.p1'
+  | 'legal.terms.s2.title'
+  | 'legal.terms.s2.p1'
+  | 'legal.terms.s3.title'
+  | 'legal.terms.s3.p1'
+  | 'legal.terms.s3.p2'
+  | 'legal.terms.s4.title'
+  | 'legal.terms.s4.p1'
+  | 'legal.terms.s5.title'
+  | 'legal.terms.s5.p1'
+  | 'legal.terms.s5.p2'
+  | 'legal.terms.s6.title'
+  | 'legal.terms.s6.p1'
+  | 'legal.terms.s7.title'
+  | 'legal.terms.s7.p1'
+  // Legal — Privacy Policy sections
+  | 'legal.privacy.s1.title'
+  | 'legal.privacy.s1.p1'
+  | 'legal.privacy.s2.title'
+  | 'legal.privacy.s2.p1'
+  | 'legal.privacy.s2.p2'
+  | 'legal.privacy.s3.title'
+  | 'legal.privacy.s3.p1'
+  | 'legal.privacy.s3.p2'
+  | 'legal.privacy.s3.p3'
+  | 'legal.privacy.s4.title'
+  | 'legal.privacy.s4.p1'
+  | 'legal.privacy.s5.title'
+  | 'legal.privacy.s5.p1'
+  | 'legal.privacy.s6.title'
+  | 'legal.privacy.s6.p1'
+  // Legal — Refund Policy sections
+  | 'legal.refunds.s1.title'
+  | 'legal.refunds.s1.p1'
+  | 'legal.refunds.s2.title'
+  | 'legal.refunds.s2.p1'
+  | 'legal.refunds.s2.p2'
+  | 'legal.refunds.s3.title'
+  | 'legal.refunds.s3.p1'
+  | 'legal.refunds.s3.p2'
+  | 'legal.refunds.s4.title'
+  | 'legal.refunds.s4.p1'
+  | 'legal.refunds.s5.title'
+  | 'legal.refunds.s5.p1'
+  // Legal — Cookie Policy sections
+  | 'legal.cookies.s1.title'
+  | 'legal.cookies.s1.p1'
+  | 'legal.cookies.s2.title'
+  | 'legal.cookies.s2.p1'
+  | 'legal.cookies.s2.p2'
+  | 'legal.cookies.s3.title'
+  | 'legal.cookies.s3.p1'
+  | 'legal.cookies.s4.title'
+  | 'legal.cookies.s4.p1'
   // Contact
   | 'contact.title'
   | 'contact.subtitle'
@@ -96,6 +155,9 @@ export type TranslationKey =
   | 'contact.sending'
   | 'contact.sent'
   | 'contact.error'
+  | 'contact.error.name'
+  | 'contact.error.email'
+  | 'contact.error.message'
   // Common
   | 'common.loading'
   | 'common.error'
@@ -293,6 +355,7 @@ export type TranslationKey =
   | 'page.title.terms'
   | 'page.title.privacy'
   | 'page.title.refunds'
+  | 'page.title.cookies'
   | 'page.title.notFound'
   | 'page.title.dashboard'
   | 'page.title.dashboardPricing'
@@ -395,6 +458,8 @@ const en: TranslationDict = {
   'footer.legal.terms': 'Terms',
   'footer.legal.privacy': 'Privacy',
   'footer.legal.refunds': 'Refunds',
+  'footer.legal.cookies': 'Cookies',
+  'footer.legal.title': 'Legal',
   'footer.nav.pricing': 'Pricing',
   'footer.nav.about': 'About',
   'footer.nav.contact': 'Contact',
@@ -406,6 +471,63 @@ const en: TranslationDict = {
   'legal.refunds.title': 'Refund Policy',
   'legal.lastUpdated': 'Last updated',
   'legal.placeholder': 'This page will be populated with finalized legal content. The visual layout and structure are ready.',
+  'legal.cookies.title': 'Cookie Policy',
+  // Terms of Service content
+  'legal.terms.s1.title': '1. Acceptance of Terms',
+  'legal.terms.s1.p1': 'By accessing or using PlanBium, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. These terms apply to all visitors and registered users.',
+  'legal.terms.s2.title': '2. Digital Products and Delivery',
+  'legal.terms.s2.p1': 'PlanBium sells digital planners delivered by download. Upon successful payment, you will receive access to download your purchased planner files. No physical goods are shipped. Due to the nature of digital products, access is granted immediately after payment confirmation.',
+  'legal.terms.s3.title': '3. License and Usage',
+  'legal.terms.s3.p1': 'Each purchased planner is licensed for personal use. You may use the planner on your personal devices and print copies for your own use. You may not resell, redistribute, share, or commercially exploit the planner files or any derivative works.',
+  'legal.terms.s3.p2': 'PlanBium retains all intellectual property rights to the planner designs, layouts, and content. Your purchase grants you a personal, non-transferable, non-exclusive license to use the product.',
+  'legal.terms.s4.title': '4. Account Responsibilities',
+  'legal.terms.s4.p1': 'You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate information during registration and to keep your account details up to date.',
+  'legal.terms.s5.title': '5. Pricing and Payments',
+  'legal.terms.s5.p1': 'Prices for digital products are displayed in the currency associated with your billing region. We reserve the right to change pricing at any time. Any changes will not affect purchases that have already been completed.',
+  'legal.terms.s5.p2': 'Payments are processed through third-party payment providers. We do not store your payment card information. All payment transactions are handled securely by our payment partners.',
+  'legal.terms.s6.title': '6. Limitation of Liability',
+  'legal.terms.s6.p1': 'PlanBium is provided on an "as is" and "as available" basis. To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services.',
+  'legal.terms.s7.title': '7. Contact',
+  'legal.terms.s7.p1': 'If you have any questions about these Terms of Service, please contact us through our contact page or at the email address listed in the footer of this site.',
+  // Privacy Policy content
+  'legal.privacy.s1.title': '1. Information We Collect',
+  'legal.privacy.s1.p1': 'PlanBium collects minimal personal data necessary to provide our services. The personal information we collect includes your email address and your chosen display name. We do not collect or store any payment card data — all payment information is handled by our third-party payment providers.',
+  'legal.privacy.s2.title': '2. How We Use Your Information',
+  'legal.privacy.s2.p1': 'Your email address is used for account authentication, order confirmations, and essential service communications. Your display name is shown within your dashboard and account area to personalize your experience.',
+  'legal.privacy.s2.p2': 'We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve the PlanBium service.',
+  'legal.privacy.s3.title': '3. Data Storage and Security',
+  'legal.privacy.s3.p1': 'Your account data is stored securely in our database. Email addresses and display names are the only personal data fields we retain. Payment card information is never stored on our servers.',
+  'legal.privacy.s3.p2': 'We employ industry-standard security measures to protect your data, including encrypted connections (HTTPS) and secure authentication. However, no method of transmission or storage is completely secure, and we cannot guarantee absolute security.',
+  'legal.privacy.s3.p3': 'Download links for your purchased products are signed and time-limited to prevent unauthorized access.',
+  'legal.privacy.s4.title': '4. Your Rights',
+  'legal.privacy.s4.p1': 'You have the right to access, correct, or request deletion of your personal data. You can update your display name and preferred language in your account settings at any time. To request deletion of your account and associated data, please contact us.',
+  'legal.privacy.s5.title': '5. Data Retention',
+  'legal.privacy.s5.p1': 'We retain your account information for as long as your account is active. Purchase records are retained to maintain your access to purchased products and for legal and tax compliance purposes.',
+  'legal.privacy.s6.title': '6. Contact',
+  'legal.privacy.s6.p1': 'If you have questions about this Privacy Policy or your personal data, please contact us through our contact page or at the email address listed in the footer of this site.',
+  // Refund Policy content
+  'legal.refunds.s1.title': '1. Refund Eligibility',
+  'legal.refunds.s1.p1': 'Because PlanBium digital planners are downloadable products that are fully accessible immediately after purchase, refund requests are evaluated on a case-by-case basis. We understand that sometimes a product may not meet your expectations.',
+  'legal.refunds.s2.title': '2. Refund Conditions',
+  'legal.refunds.s2.p1': 'You may request a refund within 14 days of purchase if the product has not been downloaded, or if the product is significantly different from its description on our website.',
+  'legal.refunds.s2.p2': 'Refunds will not be issued for products that have been downloaded and used, except in cases where the product is defective or does not match its published description.',
+  'legal.refunds.s3.title': '3. How to Request a Refund',
+  'legal.refunds.s3.p1': 'To request a refund, please contact us through our contact page with your order number and a brief explanation of the reason for your request. We will review your request and respond within 5 business days.',
+  'legal.refunds.s3.p2': 'Approved refunds will be processed back to the original payment method. The time it takes for the refund to appear in your account depends on your payment provider.',
+  'legal.refunds.s4.title': '4. Non-Refundable Cases',
+  'legal.refunds.s4.p1': 'Refunds will not be issued for change of mind after a product has been downloaded, for products purchased more than 14 days ago, or for partial bundles where individual components have been downloaded.',
+  'legal.refunds.s5.title': '5. Contact',
+  'legal.refunds.s5.p1': 'If you have any questions about our refund policy, please contact us through our contact page or at the email address listed in the footer of this site.',
+  // Cookie Policy content
+  'legal.cookies.s1.title': '1. What Are Cookies',
+  'legal.cookies.s1.p1': 'Cookies are small text files stored on your device when you visit a website. They allow the site to remember your actions and preferences over a period of time, so you do not have to re-enter them every time you visit.',
+  'legal.cookies.s2.title': '2. How PlanBium Uses Cookies',
+  'legal.cookies.s2.p1': 'PlanBium uses essential cookies to maintain your login session, remember your language preference, and keep items in your shopping cart. These cookies are necessary for the core functionality of the site.',
+  'legal.cookies.s2.p2': 'We do not use advertising or third-party tracking cookies. We do not share cookie data with advertising networks or third-party analytics providers.',
+  'legal.cookies.s3.title': '3. Managing Cookies',
+  'legal.cookies.s3.p1': 'You can control and delete cookies through your browser settings. Disabling essential cookies may affect site functionality, such as logging in, language preferences, and cart persistence. Each browser offers different methods for managing cookies — refer to your browser help documentation for instructions.',
+  'legal.cookies.s4.title': '4. Contact',
+  'legal.cookies.s4.p1': 'If you have questions about our use of cookies, please contact us through our contact page or at the email address listed in the footer of this site.',
   'contact.title': 'Get in Touch',
   'contact.subtitle': 'We would love to hear from you',
   'contact.name': 'Your name',
@@ -415,6 +537,9 @@ const en: TranslationDict = {
   'contact.sending': 'Sending...',
   'contact.sent': 'Thank you! Your message has been noted.',
   'contact.error': 'Something went wrong. Please try again.',
+  'contact.error.name': 'Please enter your name (at least 2 characters).',
+  'contact.error.email': 'Please enter a valid email address.',
+  'contact.error.message': 'Please enter a message of at least 10 characters.',
   'common.loading': 'Loading...',
   'common.error': 'Something went wrong',
   'common.back': 'Back',
@@ -611,6 +736,7 @@ const en: TranslationDict = {
   'page.title.terms': 'Terms of Service',
   'page.title.privacy': 'Privacy Policy',
   'page.title.refunds': 'Refund Policy',
+  'page.title.cookies': 'Cookie Policy',
   'page.title.notFound': 'Page Not Found',
   'page.title.dashboard': 'Dashboard',
   'page.title.dashboardPricing': 'Pricing',
@@ -739,6 +865,8 @@ const fa: TranslationDict = {
   'footer.legal.terms': 'شرایط',
   'footer.legal.privacy': 'حریم خصوصی',
   'footer.legal.refunds': 'بازپرداخت',
+  'footer.legal.cookies': 'کوکی‌ها',
+  'footer.legal.title': 'قوانین',
   'footer.nav.pricing': 'قیمت‌گذاری',
   'footer.nav.about': 'درباره ما',
   'footer.nav.contact': 'تماس',
@@ -750,6 +878,63 @@ const fa: TranslationDict = {
   'legal.refunds.title': 'سیاست بازپرداخت',
   'legal.lastUpdated': 'آخرین به‌روزرسانی',
   'legal.placeholder': 'این صفحه با محتوای حقوقی نهایی تکمیل خواهد شد. چیدمان بصری و ساختار آماده است.',
+  'legal.cookies.title': 'سیاست کوکی‌ها',
+  // شرایط خدمات
+  'legal.terms.s1.title': '۱. پذیرش شرایط',
+  'legal.terms.s1.p1': 'با دسترسی یا استفاده از PlanBium، شما موافقت می‌کنید که مشمول این شرایط خدمات باشید. اگر با بخشی از این شرایط موافق نیستید، لطفاً از خدمات ما استفاده نکنید. این شرایط برای تمام بازدیدکنندگان و کاربران ثبت‌نام‌شده اعمال می‌شود.',
+  'legal.terms.s2.title': '۲. محصولات دیجیتال و تحویل',
+  'legal.terms.s2.p1': 'PlanBium برنامه‌ریزهای دیجیتال را که از طریق دانلود تحویل داده می‌شوند، می‌فروشد. پس از پرداخت موفق، شما به فایل‌های برنامه‌ریز خریداری‌شده دسترسی دانلود دریافت خواهید کرد. هیچ کالای فیزیکی ارسال نمی‌شود. با توجه به ماهیت محصولات دیجیتال، دسترسی بلافاصله پس از تأیید پرداخت اعطا می‌شود.',
+  'legal.terms.s3.title': '۳. مجوز و استفاده',
+  'legal.terms.s3.p1': 'هر برنامه‌ریز خریداری‌شده برای استفاده شخصی مجوز داده شده است. می‌توانید از برنامه‌ریز روی دستگاه‌های شخصی خود استفاده کنید و برای استفاده خود نسخه چاپی تهیه کنید. شما نمی‌توانید فایل‌های برنامه‌ریز یا هر کار مشتق شده را مجدداً بفروشید، توزیع کنید، به اشتراک بگذارید یا به صورت تجاری بهره‌برداری کنید.',
+  'legal.terms.s3.p2': 'PlanBium تمام حقوق مالکیت فکری طراحی‌ها، چیدمان‌ها و محتوای برنامه‌ریزها را حفظ می‌کند. خرید شما یک مجوز شخصی، غیرقابل انتقال و غیرانحصاری برای استفاده از محصول اعطا می‌کند.',
+  'legal.terms.s4.title': '۴. مسئولیت‌های حساب',
+  'legal.terms.s4.p1': 'شما مسئول حفظ محرمانگی اطلاعات ورود به حساب خود و تمام فعالیت‌هایی هستید که تحت حساب شما انجام می‌شود. شما موافقت می‌کنید که هنگام ثبت‌نام اطلاعات دقیق ارائه دهید و جزئیات حساب خود را به‌روز نگه دارید.',
+  'legal.terms.s5.title': '۵. قیمت‌گذاری و پرداخت‌ها',
+  'legal.terms.s5.p1': 'قیمت‌های محصولات دیجیتال به ارز مرتبط با منطقه صورت‌گیری شما نمایش داده می‌شوند. ما حق تغییر قیمت‌گذاری را در هر زمان برای خود محفوظ می‌دانیم. هیچ تغییری بر خریدهای قبلی که تکمیل شده‌اند اعمال نمی‌شود.',
+  'legal.terms.s5.p2': 'پرداخت‌ها از طریق ارائه‌دهندگان پرداخت شخص ثالث پردازش می‌شوند. ما اطلاعات کارت پرداخت شما را ذخیره نمی‌کنیم. تمام تراکنش‌های پرداخت به صورت امن توسط شرکای پرداخت ما مدیریت می‌شوند.',
+  'legal.terms.s6.title': '۶. محدودیت مسئولیت',
+  'legal.terms.s6.p1': 'PlanBium بر اساس «آنچه هست» و «آنچه در دسترس است» ارائه می‌شود. تا حداکثر حد مجاز توسط قانون، ما مسئول هیچ خسارت غیرمستقیم، اتفاقی یا نتیجه‌ای ناشی از استفاده یا ناتوانی در استفاده از محصولات یا خدمات ما نخواهیم بود.',
+  'legal.terms.s7.title': '۷. تماس',
+  'legal.terms.s7.p1': 'اگر سوالی درباره این شرایط خدمات دارید، لطفاً از طریق صفحه تماس با ما در ارتباط باشید یا به آدرس ایمیلی که در پاورقی این سایت ذکر شده پیام بفرستید.',
+  // سیاست حریم خصوصی
+  'legal.privacy.s1.title': '۱. اطلاعاتی که جمع‌آوری می‌کنیم',
+  'legal.privacy.s1.p1': 'PlanBium حداقل داده‌های شخصی لازم برای ارائه خدمات خود را جمع‌آوری می‌کند. اطلاعات شخصی که جمع‌آوری می‌کنیم شامل آدرس ایمیل و نام نمایشی انتخابی شما است. ما هیچ داده کارت پرداختی را جمع‌آوری یا ذخیره نمی‌کنیم — تمام اطلاعات پرداخت توسط ارائه‌دهندگان پرداخت شخص ثالث ما مدیریت می‌شود.',
+  'legal.privacy.s2.title': '۲. نحوه استفاده از اطلاعات شما',
+  'legal.privacy.s2.p1': 'آدرس ایمیل شما برای احراز هویت حساب، تأیید سفارش و ارتباطات ضروری سرویس استفاده می‌شود. نام نمایشی شما در داشبورد و منطقه حساب شما نمایش داده می‌شود تا تجربه شما را شخصی‌سازی کند.',
+  'legal.privacy.s2.p2': 'ما اطلاعات شخصی شما را به اشخاص ثالث برای اهداف بازاریابی نمی‌فروشیم، اجاره نمی‌دهیم یا به اشتراک نمی‌گذاریم. داده‌های شما صرفاً برای عمل و بهبود سرویس PlanBium استفاده می‌شود.',
+  'legal.privacy.s3.title': '۳. ذخیره‌سازی و امنیت داده',
+  'legal.privacy.s3.p1': 'داده‌های حساب شما به صورت امن در پایگاه داده ما ذخیره می‌شوند. آدرس‌های ایمیل و نام‌های نمایشی تنها فیلدهای داده شخصی هستند که ما نگه می‌داریم. اطلاعات کارت پرداخت هرگز روی سرورهای ما ذخیره نمی‌شود.',
+  'legal.privacy.s3.p2': 'ما از اقدامات امنیتی استاندارد صنعتی برای محافظت از داده‌های شما استفاده می‌کنیم، از جمله اتصالات رمزنگاری‌شده (HTTPS) و احراز هویت امن. با این حال، هیچ روش انتقال یا ذخیره‌سازی کاملاً امن نیست و ما نمی‌توانیم امنیت مطلق را تضمین کنیم.',
+  'legal.privacy.s3.p3': 'لینک‌های دانلود برای محصولات خریداری‌شده شما امضا شده و دارای محدودیت زمانی هستند تا از دسترسی غیرمجاز جلوگیری شود.',
+  'legal.privacy.s4.title': '۴. حقوق شما',
+  'legal.privacy.s4.p1': 'شما حق دسترسی، اصلاح یا درخواست حذف داده‌های شخصی خود را دارید. می‌توانید نام نمایشی و زبان مورد نظر خود را در تنظیمات حساب خود در هر زمان به‌روز کنید. برای درخواست حذف حساب و داده‌های مرتبط، لطفاً با ما در تماس باشید.',
+  'legal.privacy.s5.title': '۵. نگهداری داده',
+  'legal.privacy.s5.p1': 'ما اطلاعات حساب شما را تا زمانی که حساب شما فعال است نگه می‌داریم. سوابق خرید برای حفظ دسترسی شما به محصولات خریداری‌شده و برای اهداف قانونی و مالیاتی نگهداری می‌شوند.',
+  'legal.privacy.s6.title': '۶. تماس',
+  'legal.privacy.s6.p1': 'اگر سوالی درباره این سیاست حریم خصوصی یا داده‌های شخصی خود دارید، لطفاً از طریق صفحه تماس با ما در ارتباط باشید یا به آدرس ایمیلی که در پاورقی این سایت ذکر شده پیام بفرستید.',
+  // سیاست بازپرداخت
+  'legal.refunds.s1.title': '۱. واجد شرایط بودن بازپرداخت',
+  'legal.refunds.s1.p1': 'از آنجا که برنامه‌ریزهای دیجیتال PlanBium محصولات قابل دانلود هستند که بلافاصله پس از خرید کاملاً در دسترس هستند، درخواست‌های بازپرداخت به صورت موردی بررسی می‌شوند. ما درک می‌کنیم که گاهی یک محصول ممکن است انتظارات شما را برآورده نکند.',
+  'legal.refunds.s2.title': '۲. شرایط بازپرداخت',
+  'legal.refunds.s2.p1': 'شما می‌توانید ظرف ۱۴ روز از خرید درخواست بازپرداخت کنید اگر محصول دانلود نشده باشد، یا اگر محصول به طور قابل‌توجهی با توضیحات آن در وب‌سایت ما متفاوت باشد.',
+  'legal.refunds.s2.p2': 'بازپرداخت برای محصولاتی که دانلود و استفاده شده‌اند صادر نمی‌شود، مگر در مواردی که محصول معیوب باشد یا با توضیحات منتشرشده مطابقت نداشته باشد.',
+  'legal.refunds.s3.title': '۳. نحوه درخواست بازپرداخت',
+  'legal.refunds.s3.p1': 'برای درخواست بازپرداخت، لطفاً از طریق صفحه تماس با شماره سفارش و توضیح مختصری از دلیل درخواست خود با ما در ارتباط باشید. ما درخواست شما را بررسی می‌کنیم و ظرف ۵ روز کاری پاسخ می‌دهیم.',
+  'legal.refunds.s3.p2': 'بازپرداخت‌های تأییدشده به روش پرداخت اصلی پردازش خواهند شد. مدت زمان ظاهر شدن بازپرداخت در حساب شما به ارائه‌دهنده پرداخت شما بستگی دارد.',
+  'legal.refunds.s4.title': '۴. موارد غیرقابل بازپرداخت',
+  'legal.refunds.s4.p1': 'بازپرداخت برای تغییر نظر پس از دانلود محصول، برای محصولات خریداری‌شده بیش از ۱۴ روز پیش، یا برای بسته‌های جزئی که اجزای فردی دانلود شده‌اند صادر نمی‌شود.',
+  'legal.refunds.s5.title': '۵. تماس',
+  'legal.refunds.s5.p1': 'اگر سوالی درباره سیاست بازپرداخت ما دارید، لطفاً از طریق صفحه تماس با ما در ارتباط باشید یا به آدرس ایمیلی که در پاورقی این سایت ذکر شده پیام بفرستید.',
+  // سیاست کوکی‌ها
+  'legal.cookies.s1.title': '۱. کوکی‌ها چیستند',
+  'legal.cookies.s1.p1': 'کوکی‌ها فایل‌های متنی کوچکی هستند که هنگام بازدید از یک وب‌سایت روی دستگاه شما ذخیره می‌شوند. آنها به سایت اجازه می‌دهند اقدامات و ترجیحات شما را در طول یک دوره به خاطر بسپارد، تا مجبور نباشید هر بار که بازدید می‌کنید آنها را دوباره وارد کنید.',
+  'legal.cookies.s2.title': '۲. نحوه استفاده PlanBium از کوکی‌ها',
+  'legal.cookies.s2.p1': 'PlanBium از کوکی‌های ضروری برای حفظ نشست ورود شما، به خاطر سپردن ترجیح زبان و نگهداری اقلام در سبد خرید استفاده می‌کند. این کوکی‌ها برای عملکرد اصلی سایت ضروری هستند.',
+  'legal.cookies.s2.p2': 'ما از کوکی‌های تبلیغاتی یا ردیابی شخص ثالث استفاده نمی‌کنیم. ما داده‌های کوکی را با شبکه‌های تبلیغاتی یا ارائه‌دهندگان تحلیل شخص ثالث به اشتراک نمی‌گذاریم.',
+  'legal.cookies.s3.title': '۳. مدیریت کوکی‌ها',
+  'legal.cookies.s3.p1': 'شما می‌توانید از طریق تنظیمات مرورگر خود کوکی‌ها را کنترل و حذف کنید. غیرفعال کردن کوکی‌های ضروری ممکن است بر عملکرد سایت تأثیر بگذارد، مانند ورود به سیستم، ترجیحات زبان و ماندگاری سبد. هر مرورگر روش‌های متفاوتی برای مدیریت کوکی‌ها ارائه می‌دهد — برای دستورالعمل‌ها به مستندات راهنمای مرورگر خود مراجعه کنید.',
+  'legal.cookies.s4.title': '۴. تماس',
+  'legal.cookies.s4.p1': 'اگر سوالی درباره استفاده ما از کوکی‌ها دارید، لطفاً از طریق صفحه تماس با ما در ارتباط باشید یا به آدرس ایمیلی که در پاورقی این سایت ذکر شده پیام بفرستید.',
   'contact.title': 'با ما در تماس باشید',
   'contact.subtitle': 'خوشحال می‌شویم از شما بشنویم',
   'contact.name': 'نام شما',
@@ -759,6 +944,9 @@ const fa: TranslationDict = {
   'contact.sending': 'در حال ارسال...',
   'contact.sent': 'متشکرم! پیام شما ثبت شد.',
   'contact.error': 'مشکلی پیش آمد. لطفاً دوباره تلاش کنید.',
+  'contact.error.name': 'لطفاً نام خود را وارد کنید (حداقل ۲ نویسه).',
+  'contact.error.email': 'لطفاً یک آدرس ایمیل معتبر وارد کنید.',
+  'contact.error.message': 'لطفاً پیامی با حداقل ۱۰ نویسه وارد کنید.',
   'common.loading': 'در حال بارگذاری...',
   'common.error': 'مشکلی پیش آمد',
   'common.back': 'بازگشت',
@@ -882,6 +1070,7 @@ const fa: TranslationDict = {
   'page.title.terms': 'شرایط خدمات',
   'page.title.privacy': 'سیاست حریم خصوصی',
   'page.title.refunds': 'سیاست بازپرداخت',
+  'page.title.cookies': 'سیاست کوکی‌ها',
   'page.title.notFound': 'صفحه یافت نشد',
   'page.title.dashboard': 'داشبورد',
   'page.title.dashboardPricing': 'قیمت‌گذاری',
@@ -1094,7 +1283,66 @@ const ar: TranslationDict = {
   'legal.refunds.title': 'سياسة الاسترداد',
   'legal.lastUpdated': 'آخر تحديث',
   'legal.placeholder': 'ستتم تعبئة هذه الصفحة بالمحتوى القانوني النهائي. التخطيط البصري والهيكل جاهزان.',
-  'contact.title': 'تواصل معنا',
+
+  'footer.legal.cookies': "Cookies",
+  'footer.legal.title': "Legal",
+  'legal.cookies.title': "Cookie Policy",
+  'legal.terms.s1.title': "1. Acceptance of Terms",
+  'legal.terms.s1.p1': "By accessing or using PlanBium, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. These terms apply to all visitors and registered users.",
+  'legal.terms.s2.title': "2. Digital Products and Delivery",
+  'legal.terms.s2.p1': "PlanBium sells digital planners delivered by download. Upon successful payment, you will receive access to download your purchased planner files. No physical goods are shipped. Due to the nature of digital products, access is granted immediately after payment confirmation.",
+  'legal.terms.s3.title': "3. License and Usage",
+  'legal.terms.s3.p1': "Each purchased planner is licensed for personal use. You may use the planner on your personal devices and print copies for your own use. You may not resell, redistribute, share, or commercially exploit the planner files or any derivative works.",
+  'legal.terms.s3.p2': "PlanBium retains all intellectual property rights to the planner designs, layouts, and content. Your purchase grants you a personal, non-transferable, non-exclusive license to use the product.",
+  'legal.terms.s4.title': "4. Account Responsibilities",
+  'legal.terms.s4.p1': "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate information during registration and to keep your account details up to date.",
+  'legal.terms.s5.title': "5. Pricing and Payments",
+  'legal.terms.s5.p1': "Prices for digital products are displayed in the currency associated with your billing region. We reserve the right to change pricing at any time. Any changes will not affect purchases that have already been completed.",
+  'legal.terms.s5.p2': "Payments are processed through third-party payment providers. We do not store your payment card information. All payment transactions are handled securely by our payment partners.",
+  'legal.terms.s6.title': "6. Limitation of Liability",
+  'legal.terms.s6.p1': "PlanBium is provided on an \"as is\" and \"as available\" basis. To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services.",
+  'legal.terms.s7.title': "7. Contact",
+  'legal.terms.s7.p1': "If you have any questions about these Terms of Service, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.privacy.s1.title': "1. Information We Collect",
+  'legal.privacy.s1.p1': "PlanBium collects minimal personal data necessary to provide our services. The personal information we collect includes your email address and your chosen display name. We do not collect or store any payment card data — all payment information is handled by our third-party payment providers.",
+  'legal.privacy.s2.title': "2. How We Use Your Information",
+  'legal.privacy.s2.p1': "Your email address is used for account authentication, order confirmations, and essential service communications. Your display name is shown within your dashboard and account area to personalize your experience.",
+  'legal.privacy.s2.p2': "We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve the PlanBium service.",
+  'legal.privacy.s3.title': "3. Data Storage and Security",
+  'legal.privacy.s3.p1': "Your account data is stored securely in our database. Email addresses and display names are the only personal data fields we retain. Payment card information is never stored on our servers.",
+  'legal.privacy.s3.p2': "We employ industry-standard security measures to protect your data, including encrypted connections (HTTPS) and secure authentication. However, no method of transmission or storage is completely secure, and we cannot guarantee absolute security.",
+  'legal.privacy.s3.p3': "Download links for your purchased products are signed and time-limited to prevent unauthorized access.",
+  'legal.privacy.s4.title': "4. Your Rights",
+  'legal.privacy.s4.p1': "You have the right to access, correct, or request deletion of your personal data. You can update your display name and preferred language in your account settings at any time. To request deletion of your account and associated data, please contact us.",
+  'legal.privacy.s5.title': "5. Data Retention",
+  'legal.privacy.s5.p1': "We retain your account information for as long as your account is active. Purchase records are retained to maintain your access to purchased products and for legal and tax compliance purposes.",
+  'legal.privacy.s6.title': "6. Contact",
+  'legal.privacy.s6.p1': "If you have questions about this Privacy Policy or your personal data, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.refunds.s1.title': "1. Refund Eligibility",
+  'legal.refunds.s1.p1': "Because PlanBium digital planners are downloadable products that are fully accessible immediately after purchase, refund requests are evaluated on a case-by-case basis. We understand that sometimes a product may not meet your expectations.",
+  'legal.refunds.s2.title': "2. Refund Conditions",
+  'legal.refunds.s2.p1': "You may request a refund within 14 days of purchase if the product has not been downloaded, or if the product is significantly different from its description on our website.",
+  'legal.refunds.s2.p2': "Refunds will not be issued for products that have been downloaded and used, except in cases where the product is defective or does not match its published description.",
+  'legal.refunds.s3.title': "3. How to Request a Refund",
+  'legal.refunds.s3.p1': "To request a refund, please contact us through our contact page with your order number and a brief explanation of the reason for your request. We will review your request and respond within 5 business days.",
+  'legal.refunds.s3.p2': "Approved refunds will be processed back to the original payment method. The time it takes for the refund to appear in your account depends on your payment provider.",
+  'legal.refunds.s4.title': "4. Non-Refundable Cases",
+  'legal.refunds.s4.p1': "Refunds will not be issued for change of mind after a product has been downloaded, for products purchased more than 14 days ago, or for partial bundles where individual components have been downloaded.",
+  'legal.refunds.s5.title': "5. Contact",
+  'legal.refunds.s5.p1': "If you have any questions about our refund policy, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.cookies.s1.title': "1. What Are Cookies",
+  'legal.cookies.s1.p1': "Cookies are small text files stored on your device when you visit a website. They allow the site to remember your actions and preferences over a period of time, so you do not have to re-enter them every time you visit.",
+  'legal.cookies.s2.title': "2. How PlanBium Uses Cookies",
+  'legal.cookies.s2.p1': "PlanBium uses essential cookies to maintain your login session, remember your language preference, and keep items in your shopping cart. These cookies are necessary for the core functionality of the site.",
+  'legal.cookies.s2.p2': "We do not use advertising or third-party tracking cookies. We do not share cookie data with advertising networks or third-party analytics providers.",
+  'legal.cookies.s3.title': "3. Managing Cookies",
+  'legal.cookies.s3.p1': "You can control and delete cookies through your browser settings. Disabling essential cookies may affect site functionality, such as logging in, language preferences, and cart persistence. Each browser offers different methods for managing cookies — refer to your browser help documentation for instructions.",
+  'legal.cookies.s4.title': "4. Contact",
+  'legal.cookies.s4.p1': "If you have questions about our use of cookies, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'contact.error.name': "Please enter your name (at least 2 characters).",
+  'contact.error.email': "Please enter a valid email address.",
+  'contact.error.message': "Please enter a message of at least 10 characters.",
+  'page.title.cookies': "Cookie Policy",  'contact.title': 'تواصل معنا',
   'contact.subtitle': 'نحب أن نسمع منك',
   'contact.name': 'اسمك',
   'contact.email': 'بريدك الإلكتروني',
@@ -1440,7 +1688,66 @@ const zhHans: TranslationDict = {
   'legal.refunds.title': '退款政策',
   'legal.lastUpdated': '最后更新',
   'legal.placeholder': '此页面将填充最终的法律内容。视觉布局和结构已就绪。',
-  'contact.title': '联系我们',
+
+  'footer.legal.cookies': "Cookies",
+  'footer.legal.title': "Legal",
+  'legal.cookies.title': "Cookie Policy",
+  'legal.terms.s1.title': "1. Acceptance of Terms",
+  'legal.terms.s1.p1': "By accessing or using PlanBium, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. These terms apply to all visitors and registered users.",
+  'legal.terms.s2.title': "2. Digital Products and Delivery",
+  'legal.terms.s2.p1': "PlanBium sells digital planners delivered by download. Upon successful payment, you will receive access to download your purchased planner files. No physical goods are shipped. Due to the nature of digital products, access is granted immediately after payment confirmation.",
+  'legal.terms.s3.title': "3. License and Usage",
+  'legal.terms.s3.p1': "Each purchased planner is licensed for personal use. You may use the planner on your personal devices and print copies for your own use. You may not resell, redistribute, share, or commercially exploit the planner files or any derivative works.",
+  'legal.terms.s3.p2': "PlanBium retains all intellectual property rights to the planner designs, layouts, and content. Your purchase grants you a personal, non-transferable, non-exclusive license to use the product.",
+  'legal.terms.s4.title': "4. Account Responsibilities",
+  'legal.terms.s4.p1': "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate information during registration and to keep your account details up to date.",
+  'legal.terms.s5.title': "5. Pricing and Payments",
+  'legal.terms.s5.p1': "Prices for digital products are displayed in the currency associated with your billing region. We reserve the right to change pricing at any time. Any changes will not affect purchases that have already been completed.",
+  'legal.terms.s5.p2': "Payments are processed through third-party payment providers. We do not store your payment card information. All payment transactions are handled securely by our payment partners.",
+  'legal.terms.s6.title': "6. Limitation of Liability",
+  'legal.terms.s6.p1': "PlanBium is provided on an \"as is\" and \"as available\" basis. To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services.",
+  'legal.terms.s7.title': "7. Contact",
+  'legal.terms.s7.p1': "If you have any questions about these Terms of Service, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.privacy.s1.title': "1. Information We Collect",
+  'legal.privacy.s1.p1': "PlanBium collects minimal personal data necessary to provide our services. The personal information we collect includes your email address and your chosen display name. We do not collect or store any payment card data — all payment information is handled by our third-party payment providers.",
+  'legal.privacy.s2.title': "2. How We Use Your Information",
+  'legal.privacy.s2.p1': "Your email address is used for account authentication, order confirmations, and essential service communications. Your display name is shown within your dashboard and account area to personalize your experience.",
+  'legal.privacy.s2.p2': "We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve the PlanBium service.",
+  'legal.privacy.s3.title': "3. Data Storage and Security",
+  'legal.privacy.s3.p1': "Your account data is stored securely in our database. Email addresses and display names are the only personal data fields we retain. Payment card information is never stored on our servers.",
+  'legal.privacy.s3.p2': "We employ industry-standard security measures to protect your data, including encrypted connections (HTTPS) and secure authentication. However, no method of transmission or storage is completely secure, and we cannot guarantee absolute security.",
+  'legal.privacy.s3.p3': "Download links for your purchased products are signed and time-limited to prevent unauthorized access.",
+  'legal.privacy.s4.title': "4. Your Rights",
+  'legal.privacy.s4.p1': "You have the right to access, correct, or request deletion of your personal data. You can update your display name and preferred language in your account settings at any time. To request deletion of your account and associated data, please contact us.",
+  'legal.privacy.s5.title': "5. Data Retention",
+  'legal.privacy.s5.p1': "We retain your account information for as long as your account is active. Purchase records are retained to maintain your access to purchased products and for legal and tax compliance purposes.",
+  'legal.privacy.s6.title': "6. Contact",
+  'legal.privacy.s6.p1': "If you have questions about this Privacy Policy or your personal data, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.refunds.s1.title': "1. Refund Eligibility",
+  'legal.refunds.s1.p1': "Because PlanBium digital planners are downloadable products that are fully accessible immediately after purchase, refund requests are evaluated on a case-by-case basis. We understand that sometimes a product may not meet your expectations.",
+  'legal.refunds.s2.title': "2. Refund Conditions",
+  'legal.refunds.s2.p1': "You may request a refund within 14 days of purchase if the product has not been downloaded, or if the product is significantly different from its description on our website.",
+  'legal.refunds.s2.p2': "Refunds will not be issued for products that have been downloaded and used, except in cases where the product is defective or does not match its published description.",
+  'legal.refunds.s3.title': "3. How to Request a Refund",
+  'legal.refunds.s3.p1': "To request a refund, please contact us through our contact page with your order number and a brief explanation of the reason for your request. We will review your request and respond within 5 business days.",
+  'legal.refunds.s3.p2': "Approved refunds will be processed back to the original payment method. The time it takes for the refund to appear in your account depends on your payment provider.",
+  'legal.refunds.s4.title': "4. Non-Refundable Cases",
+  'legal.refunds.s4.p1': "Refunds will not be issued for change of mind after a product has been downloaded, for products purchased more than 14 days ago, or for partial bundles where individual components have been downloaded.",
+  'legal.refunds.s5.title': "5. Contact",
+  'legal.refunds.s5.p1': "If you have any questions about our refund policy, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.cookies.s1.title': "1. What Are Cookies",
+  'legal.cookies.s1.p1': "Cookies are small text files stored on your device when you visit a website. They allow the site to remember your actions and preferences over a period of time, so you do not have to re-enter them every time you visit.",
+  'legal.cookies.s2.title': "2. How PlanBium Uses Cookies",
+  'legal.cookies.s2.p1': "PlanBium uses essential cookies to maintain your login session, remember your language preference, and keep items in your shopping cart. These cookies are necessary for the core functionality of the site.",
+  'legal.cookies.s2.p2': "We do not use advertising or third-party tracking cookies. We do not share cookie data with advertising networks or third-party analytics providers.",
+  'legal.cookies.s3.title': "3. Managing Cookies",
+  'legal.cookies.s3.p1': "You can control and delete cookies through your browser settings. Disabling essential cookies may affect site functionality, such as logging in, language preferences, and cart persistence. Each browser offers different methods for managing cookies — refer to your browser help documentation for instructions.",
+  'legal.cookies.s4.title': "4. Contact",
+  'legal.cookies.s4.p1': "If you have questions about our use of cookies, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'contact.error.name': "Please enter your name (at least 2 characters).",
+  'contact.error.email': "Please enter a valid email address.",
+  'contact.error.message': "Please enter a message of at least 10 characters.",
+  'page.title.cookies': "Cookie Policy",  'contact.title': '联系我们',
   'contact.subtitle': '我们很乐意收到你的消息',
   'contact.name': '你的名字',
   'contact.email': '你的邮箱',
@@ -1787,7 +2094,66 @@ const nl: TranslationDict = {
   'legal.refunds.title': 'Terugbetalingsbeleid',
   'legal.lastUpdated': 'Laatst bijgewerkt',
   'legal.placeholder': 'Deze pagina wordt gevuld met definitieve juridische inhoud. De visuele lay-out en structuur zijn klaar.',
-  'contact.title': 'Neem contact op',
+
+  'footer.legal.cookies': "Cookies",
+  'footer.legal.title': "Legal",
+  'legal.cookies.title': "Cookie Policy",
+  'legal.terms.s1.title': "1. Acceptance of Terms",
+  'legal.terms.s1.p1': "By accessing or using PlanBium, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. These terms apply to all visitors and registered users.",
+  'legal.terms.s2.title': "2. Digital Products and Delivery",
+  'legal.terms.s2.p1': "PlanBium sells digital planners delivered by download. Upon successful payment, you will receive access to download your purchased planner files. No physical goods are shipped. Due to the nature of digital products, access is granted immediately after payment confirmation.",
+  'legal.terms.s3.title': "3. License and Usage",
+  'legal.terms.s3.p1': "Each purchased planner is licensed for personal use. You may use the planner on your personal devices and print copies for your own use. You may not resell, redistribute, share, or commercially exploit the planner files or any derivative works.",
+  'legal.terms.s3.p2': "PlanBium retains all intellectual property rights to the planner designs, layouts, and content. Your purchase grants you a personal, non-transferable, non-exclusive license to use the product.",
+  'legal.terms.s4.title': "4. Account Responsibilities",
+  'legal.terms.s4.p1': "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate information during registration and to keep your account details up to date.",
+  'legal.terms.s5.title': "5. Pricing and Payments",
+  'legal.terms.s5.p1': "Prices for digital products are displayed in the currency associated with your billing region. We reserve the right to change pricing at any time. Any changes will not affect purchases that have already been completed.",
+  'legal.terms.s5.p2': "Payments are processed through third-party payment providers. We do not store your payment card information. All payment transactions are handled securely by our payment partners.",
+  'legal.terms.s6.title': "6. Limitation of Liability",
+  'legal.terms.s6.p1': "PlanBium is provided on an \"as is\" and \"as available\" basis. To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services.",
+  'legal.terms.s7.title': "7. Contact",
+  'legal.terms.s7.p1': "If you have any questions about these Terms of Service, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.privacy.s1.title': "1. Information We Collect",
+  'legal.privacy.s1.p1': "PlanBium collects minimal personal data necessary to provide our services. The personal information we collect includes your email address and your chosen display name. We do not collect or store any payment card data — all payment information is handled by our third-party payment providers.",
+  'legal.privacy.s2.title': "2. How We Use Your Information",
+  'legal.privacy.s2.p1': "Your email address is used for account authentication, order confirmations, and essential service communications. Your display name is shown within your dashboard and account area to personalize your experience.",
+  'legal.privacy.s2.p2': "We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve the PlanBium service.",
+  'legal.privacy.s3.title': "3. Data Storage and Security",
+  'legal.privacy.s3.p1': "Your account data is stored securely in our database. Email addresses and display names are the only personal data fields we retain. Payment card information is never stored on our servers.",
+  'legal.privacy.s3.p2': "We employ industry-standard security measures to protect your data, including encrypted connections (HTTPS) and secure authentication. However, no method of transmission or storage is completely secure, and we cannot guarantee absolute security.",
+  'legal.privacy.s3.p3': "Download links for your purchased products are signed and time-limited to prevent unauthorized access.",
+  'legal.privacy.s4.title': "4. Your Rights",
+  'legal.privacy.s4.p1': "You have the right to access, correct, or request deletion of your personal data. You can update your display name and preferred language in your account settings at any time. To request deletion of your account and associated data, please contact us.",
+  'legal.privacy.s5.title': "5. Data Retention",
+  'legal.privacy.s5.p1': "We retain your account information for as long as your account is active. Purchase records are retained to maintain your access to purchased products and for legal and tax compliance purposes.",
+  'legal.privacy.s6.title': "6. Contact",
+  'legal.privacy.s6.p1': "If you have questions about this Privacy Policy or your personal data, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.refunds.s1.title': "1. Refund Eligibility",
+  'legal.refunds.s1.p1': "Because PlanBium digital planners are downloadable products that are fully accessible immediately after purchase, refund requests are evaluated on a case-by-case basis. We understand that sometimes a product may not meet your expectations.",
+  'legal.refunds.s2.title': "2. Refund Conditions",
+  'legal.refunds.s2.p1': "You may request a refund within 14 days of purchase if the product has not been downloaded, or if the product is significantly different from its description on our website.",
+  'legal.refunds.s2.p2': "Refunds will not be issued for products that have been downloaded and used, except in cases where the product is defective or does not match its published description.",
+  'legal.refunds.s3.title': "3. How to Request a Refund",
+  'legal.refunds.s3.p1': "To request a refund, please contact us through our contact page with your order number and a brief explanation of the reason for your request. We will review your request and respond within 5 business days.",
+  'legal.refunds.s3.p2': "Approved refunds will be processed back to the original payment method. The time it takes for the refund to appear in your account depends on your payment provider.",
+  'legal.refunds.s4.title': "4. Non-Refundable Cases",
+  'legal.refunds.s4.p1': "Refunds will not be issued for change of mind after a product has been downloaded, for products purchased more than 14 days ago, or for partial bundles where individual components have been downloaded.",
+  'legal.refunds.s5.title': "5. Contact",
+  'legal.refunds.s5.p1': "If you have any questions about our refund policy, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.cookies.s1.title': "1. What Are Cookies",
+  'legal.cookies.s1.p1': "Cookies are small text files stored on your device when you visit a website. They allow the site to remember your actions and preferences over a period of time, so you do not have to re-enter them every time you visit.",
+  'legal.cookies.s2.title': "2. How PlanBium Uses Cookies",
+  'legal.cookies.s2.p1': "PlanBium uses essential cookies to maintain your login session, remember your language preference, and keep items in your shopping cart. These cookies are necessary for the core functionality of the site.",
+  'legal.cookies.s2.p2': "We do not use advertising or third-party tracking cookies. We do not share cookie data with advertising networks or third-party analytics providers.",
+  'legal.cookies.s3.title': "3. Managing Cookies",
+  'legal.cookies.s3.p1': "You can control and delete cookies through your browser settings. Disabling essential cookies may affect site functionality, such as logging in, language preferences, and cart persistence. Each browser offers different methods for managing cookies — refer to your browser help documentation for instructions.",
+  'legal.cookies.s4.title': "4. Contact",
+  'legal.cookies.s4.p1': "If you have questions about our use of cookies, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'contact.error.name': "Please enter your name (at least 2 characters).",
+  'contact.error.email': "Please enter a valid email address.",
+  'contact.error.message': "Please enter a message of at least 10 characters.",
+  'page.title.cookies': "Cookie Policy",  'contact.title': 'Neem contact op',
   'contact.subtitle': 'We horen graag van je',
   'contact.name': 'Je naam',
   'contact.email': 'Je e-mail',
@@ -2134,7 +2500,66 @@ const es: TranslationDict = {
   'legal.refunds.title': 'Política de reembolso',
   'legal.lastUpdated': 'Última actualización',
   'legal.placeholder': 'Esta página se completará con contenido legal finalizado. El diseño visual y la estructura están listos.',
-  'contact.title': 'Ponte en contacto',
+
+  'footer.legal.cookies': "Cookies",
+  'footer.legal.title': "Legal",
+  'legal.cookies.title': "Cookie Policy",
+  'legal.terms.s1.title': "1. Acceptance of Terms",
+  'legal.terms.s1.p1': "By accessing or using PlanBium, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services. These terms apply to all visitors and registered users.",
+  'legal.terms.s2.title': "2. Digital Products and Delivery",
+  'legal.terms.s2.p1': "PlanBium sells digital planners delivered by download. Upon successful payment, you will receive access to download your purchased planner files. No physical goods are shipped. Due to the nature of digital products, access is granted immediately after payment confirmation.",
+  'legal.terms.s3.title': "3. License and Usage",
+  'legal.terms.s3.p1': "Each purchased planner is licensed for personal use. You may use the planner on your personal devices and print copies for your own use. You may not resell, redistribute, share, or commercially exploit the planner files or any derivative works.",
+  'legal.terms.s3.p2': "PlanBium retains all intellectual property rights to the planner designs, layouts, and content. Your purchase grants you a personal, non-transferable, non-exclusive license to use the product.",
+  'legal.terms.s4.title': "4. Account Responsibilities",
+  'legal.terms.s4.p1': "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate information during registration and to keep your account details up to date.",
+  'legal.terms.s5.title': "5. Pricing and Payments",
+  'legal.terms.s5.p1': "Prices for digital products are displayed in the currency associated with your billing region. We reserve the right to change pricing at any time. Any changes will not affect purchases that have already been completed.",
+  'legal.terms.s5.p2': "Payments are processed through third-party payment providers. We do not store your payment card information. All payment transactions are handled securely by our payment partners.",
+  'legal.terms.s6.title': "6. Limitation of Liability",
+  'legal.terms.s6.p1': "PlanBium is provided on an \"as is\" and \"as available\" basis. To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our products or services.",
+  'legal.terms.s7.title': "7. Contact",
+  'legal.terms.s7.p1': "If you have any questions about these Terms of Service, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.privacy.s1.title': "1. Information We Collect",
+  'legal.privacy.s1.p1': "PlanBium collects minimal personal data necessary to provide our services. The personal information we collect includes your email address and your chosen display name. We do not collect or store any payment card data — all payment information is handled by our third-party payment providers.",
+  'legal.privacy.s2.title': "2. How We Use Your Information",
+  'legal.privacy.s2.p1': "Your email address is used for account authentication, order confirmations, and essential service communications. Your display name is shown within your dashboard and account area to personalize your experience.",
+  'legal.privacy.s2.p2': "We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve the PlanBium service.",
+  'legal.privacy.s3.title': "3. Data Storage and Security",
+  'legal.privacy.s3.p1': "Your account data is stored securely in our database. Email addresses and display names are the only personal data fields we retain. Payment card information is never stored on our servers.",
+  'legal.privacy.s3.p2': "We employ industry-standard security measures to protect your data, including encrypted connections (HTTPS) and secure authentication. However, no method of transmission or storage is completely secure, and we cannot guarantee absolute security.",
+  'legal.privacy.s3.p3': "Download links for your purchased products are signed and time-limited to prevent unauthorized access.",
+  'legal.privacy.s4.title': "4. Your Rights",
+  'legal.privacy.s4.p1': "You have the right to access, correct, or request deletion of your personal data. You can update your display name and preferred language in your account settings at any time. To request deletion of your account and associated data, please contact us.",
+  'legal.privacy.s5.title': "5. Data Retention",
+  'legal.privacy.s5.p1': "We retain your account information for as long as your account is active. Purchase records are retained to maintain your access to purchased products and for legal and tax compliance purposes.",
+  'legal.privacy.s6.title': "6. Contact",
+  'legal.privacy.s6.p1': "If you have questions about this Privacy Policy or your personal data, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.refunds.s1.title': "1. Refund Eligibility",
+  'legal.refunds.s1.p1': "Because PlanBium digital planners are downloadable products that are fully accessible immediately after purchase, refund requests are evaluated on a case-by-case basis. We understand that sometimes a product may not meet your expectations.",
+  'legal.refunds.s2.title': "2. Refund Conditions",
+  'legal.refunds.s2.p1': "You may request a refund within 14 days of purchase if the product has not been downloaded, or if the product is significantly different from its description on our website.",
+  'legal.refunds.s2.p2': "Refunds will not be issued for products that have been downloaded and used, except in cases where the product is defective or does not match its published description.",
+  'legal.refunds.s3.title': "3. How to Request a Refund",
+  'legal.refunds.s3.p1': "To request a refund, please contact us through our contact page with your order number and a brief explanation of the reason for your request. We will review your request and respond within 5 business days.",
+  'legal.refunds.s3.p2': "Approved refunds will be processed back to the original payment method. The time it takes for the refund to appear in your account depends on your payment provider.",
+  'legal.refunds.s4.title': "4. Non-Refundable Cases",
+  'legal.refunds.s4.p1': "Refunds will not be issued for change of mind after a product has been downloaded, for products purchased more than 14 days ago, or for partial bundles where individual components have been downloaded.",
+  'legal.refunds.s5.title': "5. Contact",
+  'legal.refunds.s5.p1': "If you have any questions about our refund policy, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'legal.cookies.s1.title': "1. What Are Cookies",
+  'legal.cookies.s1.p1': "Cookies are small text files stored on your device when you visit a website. They allow the site to remember your actions and preferences over a period of time, so you do not have to re-enter them every time you visit.",
+  'legal.cookies.s2.title': "2. How PlanBium Uses Cookies",
+  'legal.cookies.s2.p1': "PlanBium uses essential cookies to maintain your login session, remember your language preference, and keep items in your shopping cart. These cookies are necessary for the core functionality of the site.",
+  'legal.cookies.s2.p2': "We do not use advertising or third-party tracking cookies. We do not share cookie data with advertising networks or third-party analytics providers.",
+  'legal.cookies.s3.title': "3. Managing Cookies",
+  'legal.cookies.s3.p1': "You can control and delete cookies through your browser settings. Disabling essential cookies may affect site functionality, such as logging in, language preferences, and cart persistence. Each browser offers different methods for managing cookies — refer to your browser help documentation for instructions.",
+  'legal.cookies.s4.title': "4. Contact",
+  'legal.cookies.s4.p1': "If you have questions about our use of cookies, please contact us through our contact page or at the email address listed in the footer of this site.",
+  'contact.error.name': "Please enter your name (at least 2 characters).",
+  'contact.error.email': "Please enter a valid email address.",
+  'contact.error.message': "Please enter a message of at least 10 characters.",
+  'page.title.cookies': "Cookie Policy",  'contact.title': 'Ponte en contacto',
   'contact.subtitle': 'Nos encantaría saber de ti',
   'contact.name': 'Tu nombre',
   'contact.email': 'Tu correo electrónico',
