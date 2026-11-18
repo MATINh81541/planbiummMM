@@ -1,10 +1,10 @@
 /*
  * PlanBium contact page.
- * Simple, elegant contact form with Liquid Glass styling.
+ * Form with validation, honeypot anti-bot field, and demo-mode storage.
  */
 
 import { useState, type FormEvent } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, Mail } from 'lucide-react';
 import { FluidBackground } from '@/components/FluidBackground';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -12,30 +12,49 @@ import { Button } from '@/components/ui/Button';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useToast } from '@/components/ui/Toast';
+import { appConfig } from '@/lib/config/env';
+import {
+  submitContactMessage,
+  ContactValidationError,
+  type ContactValidationErrors,
+} from '@/lib/services/contact-service';
 
 export function ContactPage() {
   const { t } = useLocale();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [validationErrors, setValidationErrors] = useState<ContactValidationErrors>({});
   useDocumentTitle('page.title.contact');
   const { showToast } = useToast();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    if (honeypot) {
+      return;
+    }
+
     setStatus('sending');
+    setValidationErrors({});
+
     try {
-      // Placeholder: will be connected to an edge function or email service in a later prompt
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await submitContactMessage({ name, email, message });
       setStatus('sent');
       showToast('success', t('toast.contactSent'));
       setName('');
       setEmail('');
       setMessage('');
-    } catch {
-      setStatus('error');
-      showToast('error', t('contact.error'));
+    } catch (err) {
+      if (err instanceof ContactValidationError) {
+        setValidationErrors(err.errors);
+        setStatus('idle');
+      } else {
+        setStatus('error');
+        showToast('error', t('contact.error'));
+      }
     }
   }
 
@@ -51,6 +70,16 @@ export function ContactPage() {
             <p className="mt-3 text-lg text-gray-500">
               {t('contact.subtitle')}
             </p>
+            {appConfig.contactEmail && (
+              <a
+                href={`mailto:${appConfig.contactEmail}`}
+                className="mt-4 inline-flex items-center gap-2 text-sm text-lime-700 hover:text-lime-800 transition-colors"
+                dir="ltr"
+              >
+                <Mail size={16} aria-hidden="true" />
+                {appConfig.contactEmail}
+              </a>
+            )}
           </div>
 
           <GlassCard variant="strong" className="p-8 sm:p-10">
@@ -63,7 +92,20 @@ export function ContactPage() {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                {/* Honeypot field — hidden from real users, bots fill it */}
+                <div className="absolute -left-[9999px]" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
                     {t('contact.name')}
@@ -76,6 +118,9 @@ export function ContactPage() {
                     onChange={(e) => setName(e.target.value)}
                     className="w-full rounded-xl border border-gray-200 bg-white/60 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-400/30 transition-colors"
                   />
+                  {validationErrors.name && (
+                    <p className="mt-1 text-sm text-red-600">{t(validationErrors.name as never)}</p>
+                  )}
                 </div>
 
                 <div>
@@ -91,6 +136,9 @@ export function ContactPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full rounded-xl border border-gray-200 bg-white/60 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-400/30 transition-colors"
                   />
+                  {validationErrors.email && (
+                    <p className="mt-1 text-sm text-red-600">{t(validationErrors.email as never)}</p>
+                  )}
                 </div>
 
                 <div>
@@ -105,13 +153,22 @@ export function ContactPage() {
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full rounded-xl border border-gray-200 bg-white/60 px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-400/30 transition-colors resize-none"
                   />
+                  {validationErrors.message && (
+                    <p className="mt-1 text-sm text-red-600">{t(validationErrors.message as never)}</p>
+                  )}
                 </div>
 
                 {status === 'error' && (
                   <p className="text-sm text-red-600">{t('contact.error')}</p>
                 )}
 
-                <Button type="submit" variant="primary" size="md" className="w-full" disabled={status === 'sending'}>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="md"
+                  className="w-full"
+                  disabled={status === 'sending'}
+                >
                   <Send size={18} className="rtl:rotate-180" aria-hidden="true" />
                   {status === 'sending' ? t('contact.sending') : t('contact.send')}
                 </Button>
