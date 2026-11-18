@@ -14,6 +14,7 @@ import { orderService, entitlementService, requestDownloadUrl } from '@/lib/serv
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import type { Order, OrderItem, Entitlement } from '@/lib/types';
 
 interface PurchaseDisplay {
@@ -28,6 +29,7 @@ export function DashboardPurchasesPage() {
   const [purchases, setPurchases] = useState<PurchaseDisplay[]>([]);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  useDocumentTitle('page.title.purchases');
 
   useEffect(() => {
     (async () => {

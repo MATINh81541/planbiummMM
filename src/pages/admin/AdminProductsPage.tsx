@@ -10,6 +10,7 @@ import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 interface AdminProduct {
   id: string;
@@ -25,6 +26,7 @@ export function AdminProductsPage() {
   const [actionId, setActionId] = useState<string | null>(null);
   const [newSlug, setNewSlug] = useState('');
   const [creating, setCreating] = useState(false);
+  useDocumentTitle('page.title.adminProducts');
 
   const load = useCallback(async () => {
     setLoading(true);

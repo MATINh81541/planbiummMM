@@ -258,6 +258,26 @@ export type TranslationKey =
   | 'admin.users.title'
   | 'admin.users.email'
   | 'admin.users.role'
+  // Page titles (browser tab)
+  | 'page.title.home'
+  | 'page.title.pricing'
+  | 'page.title.contact'
+  | 'page.title.terms'
+  | 'page.title.privacy'
+  | 'page.title.refunds'
+  | 'page.title.notFound'
+  | 'page.title.dashboard'
+  | 'page.title.dashboardPricing'
+  | 'page.title.cart'
+  | 'page.title.purchases'
+  | 'page.title.account'
+  | 'page.title.checkout'
+  | 'page.title.checkoutResult'
+  | 'page.title.adminProducts'
+  | 'page.title.adminOrders'
+  | 'page.title.adminPayments'
+  | 'page.title.adminEntitlements'
+  | 'page.title.adminUsers'
   // Error codes
   | `error.${ErrorCode}`;
 
@@ -501,6 +521,26 @@ const en: TranslationDict = {
   'admin.users.title': 'Manage Users',
   'admin.users.email': 'Email',
   'admin.users.role': 'Role',
+  // Page titles (browser tab)
+  'page.title.home': 'Home',
+  'page.title.pricing': 'Pricing',
+  'page.title.contact': 'Contact',
+  'page.title.terms': 'Terms of Service',
+  'page.title.privacy': 'Privacy Policy',
+  'page.title.refunds': 'Refund Policy',
+  'page.title.notFound': 'Page Not Found',
+  'page.title.dashboard': 'Dashboard',
+  'page.title.dashboardPricing': 'Pricing',
+  'page.title.cart': 'Cart',
+  'page.title.purchases': 'My Purchases',
+  'page.title.account': 'Account Settings',
+  'page.title.checkout': 'Checkout',
+  'page.title.checkoutResult': 'Payment Result',
+  'page.title.adminProducts': 'Manage Products',
+  'page.title.adminOrders': 'Manage Orders',
+  'page.title.adminPayments': 'Manage Payments',
+  'page.title.adminEntitlements': 'Manage Entitlements',
+  'page.title.adminUsers': 'Manage Users',
   // Error codes
   'error.unauthorized': 'Please sign in to continue.',
   'error.forbidden': 'You do not have access to this.',
@@ -697,6 +737,26 @@ const fa: TranslationDict = {
   'account.saving': 'در حال ذخیره...',
   'account.saved': 'تغییرات ذخیره شد!',
   'account.error': 'ذخیره تغییرات ممکن نشد. لطفاً دوباره تلاش کنید.',
+  // Page titles (browser tab)
+  'page.title.home': 'خانه',
+  'page.title.pricing': 'قیمت‌گذاری',
+  'page.title.contact': 'تماس',
+  'page.title.terms': 'شرایط خدمات',
+  'page.title.privacy': 'سیاست حریم خصوصی',
+  'page.title.refunds': 'سیاست بازپرداخت',
+  'page.title.notFound': 'صفحه یافت نشد',
+  'page.title.dashboard': 'داشبورد',
+  'page.title.dashboardPricing': 'قیمت‌گذاری',
+  'page.title.cart': 'سبد',
+  'page.title.purchases': 'خریدهای من',
+  'page.title.account': 'تنظیمات حساب',
+  'page.title.checkout': 'پرداخت',
+  'page.title.checkoutResult': 'نتیجه پرداخت',
+  'page.title.adminProducts': 'مدیریت محصولات',
+  'page.title.adminOrders': 'مدیریت سفارش‌ها',
+  'page.title.adminPayments': 'مدیریت پرداخت‌ها',
+  'page.title.adminEntitlements': 'مدیریت دسترسی‌ها',
+  'page.title.adminUsers': 'مدیریت کاربران',
 };
 
 const ar: TranslationDict = {

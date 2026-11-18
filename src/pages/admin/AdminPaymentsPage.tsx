@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/locale-context';
 import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { GlassCard } from '@/components/ui/GlassCard';
 
 interface AdminPayment {
@@ -25,6 +26,7 @@ export function AdminPaymentsPage() {
   const { t, formatCurrency } = useLocale();
   const [payments, setPayments] = useState<AdminPayment[]>([]);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle('page.title.adminPayments');
 
   useEffect(() => {
     (async () => {

@@ -10,6 +10,7 @@ import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 interface AdminEntitlement {
   id: string;
@@ -25,6 +26,7 @@ export function AdminEntitlementsPage() {
   const [entitlements, setEntitlements] = useState<AdminEntitlement[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionId, setActionId] = useState<string | null>(null);
+  useDocumentTitle('page.title.adminEntitlements');
 
   const load = useCallback(async () => {
     setLoading(true);

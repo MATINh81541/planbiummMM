@@ -11,9 +11,11 @@ import { FluidBackground } from '@/components/FluidBackground';
 import { Hero } from '@/components/Hero';
 import { AboutSection } from '@/components/AboutSection';
 import { FAQSection } from '@/components/FAQSection';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function HomePage() {
   const location = useLocation();
+  useDocumentTitle('page.title.home');
 
   useEffect(() => {
     if (!location.hash) return;

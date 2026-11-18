@@ -19,6 +19,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const SUPPORTED_COUNTRIES = ['IR', 'NL', 'ES', 'CN', 'US', 'GB', 'CA', 'AU', 'SA', 'AE', 'EG', 'IQ'];
 
@@ -40,6 +41,7 @@ export function CheckoutPage() {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+  useDocumentTitle('page.title.checkout');
 
   // Create checkout session on mount
   useEffect(() => {

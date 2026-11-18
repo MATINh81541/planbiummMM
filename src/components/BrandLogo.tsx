@@ -1,4 +1,4 @@
-const LOGO_SRC = '/assets/logo/photo_2026-09-20_10-50-15.jpg';
+const LOGO_SRC = '/assets/logo/planbium-logo.jpg';
 
 interface BrandLogoProps {
   size?: 'compact' | 'default' | 'large';

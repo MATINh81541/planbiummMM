@@ -10,10 +10,12 @@ import { useLocale } from '@/lib/i18n/locale-context';
 import { useAuth } from '@/lib/auth/auth-context';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function DashboardHomePage() {
   const { t } = useLocale();
   const { user } = useAuth();
+  useDocumentTitle('page.title.dashboard');
 
   const quickLinks = [
     { to: '/dashboard/pricing', label: t('dashboard.nav.pricing'), icon: LayoutGrid },

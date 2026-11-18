@@ -10,6 +10,7 @@ import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function ContactPage() {
   const { t } = useLocale();
@@ -17,6 +18,7 @@ export function ContactPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  useDocumentTitle('page.title.contact');
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();

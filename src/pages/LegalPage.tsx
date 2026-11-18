@@ -8,6 +8,7 @@ import { FluidBackground } from '@/components/FluidBackground';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 type LegalType = 'terms' | 'privacy' | 'refunds';
 
@@ -24,6 +25,15 @@ export function LegalPage({ type }: LegalPageProps) {
       : type === 'privacy'
         ? 'legal.privacy.title'
         : 'legal.refunds.title';
+
+  const pageTitleKey =
+    type === 'terms'
+      ? 'page.title.terms'
+      : type === 'privacy'
+        ? 'page.title.privacy'
+        : 'page.title.refunds';
+
+  useDocumentTitle(pageTitleKey);
 
   return (
     <>

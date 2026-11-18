@@ -15,6 +15,7 @@ import { paymentService } from '@/lib/services/payment-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const MAX_POLLS = 10;
 const POLL_INTERVAL_MS = 3000;
@@ -24,6 +25,7 @@ export function CheckoutResultPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('order') ?? '';
+  useDocumentTitle('page.title.checkoutResult');
 
   const [orderStatus, setOrderStatus] = useState<string>('pending');
   const [paymentStatus, setPaymentStatus] = useState<string>('processing');

@@ -9,6 +9,7 @@ import { useLocale } from '@/lib/i18n/locale-context';
 import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 interface AdminOrder {
   id: string;
@@ -25,6 +26,7 @@ export function AdminOrdersPage() {
   const { t, formatCurrency } = useLocale();
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle('page.title.adminOrders');
 
   useEffect(() => {
     (async () => {

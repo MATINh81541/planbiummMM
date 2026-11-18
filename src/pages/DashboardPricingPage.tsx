@@ -17,12 +17,14 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { PricingCard } from '@/components/PricingCard';
 import { SkeletonCard } from '@/components/ui/Skeleton';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function DashboardPricingPage() {
   const { t } = useLocale();
   const { products, loading, error, refetch } = useCatalog();
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
+  useDocumentTitle('page.title.dashboardPricing');
 
   const handleSelect = useCallback(async (productId: string) => {
     setSelectingId(productId);

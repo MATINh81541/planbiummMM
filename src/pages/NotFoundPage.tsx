@@ -9,9 +9,11 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useLocale } from '@/lib/i18n/locale-context';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function NotFoundPage() {
   const { t } = useLocale();
+  useDocumentTitle('page.title.notFound');
 
   return (
     <>

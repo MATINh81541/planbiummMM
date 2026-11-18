@@ -9,6 +9,7 @@ import { useLocale } from '@/lib/i18n/locale-context';
 import { adminService } from '@/lib/services/admin-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 interface AdminUser {
   user_id: string;
@@ -23,6 +24,7 @@ export function AdminUsersPage() {
   const { t } = useLocale();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle('page.title.adminUsers');
 
   useEffect(() => {
     (async () => {

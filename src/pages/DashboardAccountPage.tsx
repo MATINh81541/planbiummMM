@@ -17,11 +17,13 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import type { Profile } from '@/lib/types';
 import type { LocaleCode } from '@/lib/config/locales';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function DashboardAccountPage() {
   const { t, locale, setLocale } = useLocale();
   const { user } = useAuth();
   const { setTheme } = useDashboardTheme();
+  useDocumentTitle('page.title.account');
 
   const [, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);

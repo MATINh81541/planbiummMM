@@ -20,6 +20,7 @@ import { entitlementService } from '@/lib/services/entitlement-service';
 import { Container } from '@/components/ui/Container';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import type { CartItem, Product, ProductTranslation, Price } from '@/lib/types';
 
 // TODO(backend): re-enable direct product lookups once the custom backend is wired up.
@@ -42,6 +43,7 @@ export function DashboardCartPage() {
   const [items, setItems] = useState<CartDisplayItem[]>([]);
   const [restoring, setRestoring] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  useDocumentTitle('page.title.cart');
 
   const loadCart = useCallback(async () => {
     setLoading(true);

@@ -17,6 +17,7 @@ import { useLocale } from '@/lib/i18n/locale-context';
 import { useCatalog } from '@/hooks/useCatalog';
 import { usePendingPurchase } from '@/hooks/usePendingPurchase';
 import { cartService } from '@/lib/services/cart-service';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function PricingPage() {
   const { t } = useLocale();
@@ -24,6 +25,7 @@ export function PricingPage() {
   const { setPending } = usePendingPurchase();
   const navigate = useNavigate();
   const [selectingId, setSelectingId] = useState<string | null>(null);
+  useDocumentTitle('page.title.pricing');
 
   const handleSelect = useCallback(
     async (productId: string) => {
